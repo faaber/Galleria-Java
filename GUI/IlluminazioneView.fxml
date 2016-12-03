@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="containerIlluminazione" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.IlluminazioneController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" spacing="30.0" styleClass="area_di_selezione">
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Criterio">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <RadioButton fx:id="rButtonCriterioDinamico" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCriterio" text="Dinamico">
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="tgroupCriterio" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rButtonCriterioCostMan" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCriterio" text="Costante manuale" toggleGroup="$tgroupCriterio">
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </RadioButton>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="20.0" styleClass="area_di_selezione" HBox.hgrow="SOMETIMES">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Impostazioni criterio costante manuale">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Livello">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="valoreLivelloCM" alignment="CENTER" text="127">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </HBox>
+                  <Slider fx:id="sliderLivelloCM" blockIncrement="1.0" majorTickUnit="85.0" max="0.0" minorTickCount="84" showTickLabels="true" snapToTicks="true" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <BarChart fx:id="chartCurva" alternativeRowFillVisible="false" barGap="0.0" categoryGap="0.0" legendSide="TOP" legendVisible="false" styleClass="area_informativa" title="Curva d'illuminazione attuale" verticalGridLinesVisible="false" VBox.vgrow="ALWAYS">
+         <xAxis>
+            <CategoryAxis fx:id="axisPixel" endMargin="0.0" label="Pixel N°" startMargin="0.0" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis autoRanging="false" minorTickCount="4" side="LEFT" tickLabelGap="1.0" tickMarkVisible="false" tickUnit="85.0" upperBound="255.0" />
+         </yAxis>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </VBox.margin>
+      </BarChart>
+   </children>
+</VBox>

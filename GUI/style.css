@@ -1,0 +1,20 @@
+.area_di_selezione{
+    -fx-background-color: whitesmoke;
+    -fx-border-color: gray;
+    -fx-border-radius: 0.5em;
+    -fx-padding-bottom: 5px;
+    -fx-padding-top: 5px;
+    -fx-padding-left: 5px;
+    -fx-padding-right: 5px;
+    -fx-border-width: 2px;
+}
+
+.area_di_selezione:hover{
+    -fx-border-color: lightblue;
+}
+
+.area_informativa{
+    -fx-background-color: whitesmoke;
+    -fx-border-color: gray;
+    -fx-border-width: 2px;
+}

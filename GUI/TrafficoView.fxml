@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="containerTraffico" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.TrafficoController">
+   <children>
+      <VBox alignment="CENTER" spacing="30.0" styleClass="area_di_selezione">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Circolazione">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="rButtonCircolazioneDS" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCircolazione" text="Doppio senso">
+               <toggleGroup>
+                  <ToggleGroup fx:id="tgroupCircolazione" />
+               </toggleGroup>
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="rButtonCircSUSX" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCircolazione" text="Senso unico SX" toggleGroup="$tgroupCircolazione">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="rButtonCircSUDX" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCircolazione" text="Senso unico DX" toggleGroup="$tgroupCircolazione">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="rButtonCircSUA" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCircolazione" text="Senso unico alternato" toggleGroup="$tgroupCircolazione">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="rButtonCircInterd" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cambiaCircolazione" text="Interdetto" toggleGroup="$tgroupCircolazione">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </RadioButton>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="CENTER" spacing="25.0" styleClass="area_di_selezione" HBox.hgrow="SOMETIMES">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Impostazioni senso unico alternato">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <HBox>
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" text="Durata verde DX - rosso SX:  " />
+                  <Label fx:id="valoreDurataVerdeDX" alignment="CENTER" contentDisplay="CENTER" text="0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text=" secondi">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Slider fx:id="sliderDurataVerdeDX" blockIncrement="1.0" majorTickUnit="5.0" max="0.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" VBox.vgrow="SOMETIMES" />
+            <HBox>
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" text="Durata verde SX - rosso DX:  " />
+                  <Label fx:id="valoreDurataVerdeSX" alignment="CENTER" contentDisplay="CENTER" text="0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text=" secondi">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Slider fx:id="sliderDurataVerdeSX" blockIncrement="1.0" majorTickUnit="5.0" max="0.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+            <HBox>
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" text="Durata rosso aggiuntiva: " />
+                  <Label fx:id="valoreDurataRossoAggiuntiva" alignment="CENTER" contentDisplay="CENTER" text="0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text=" secondi">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Slider fx:id="sliderDurataRossoAggiuntiva" blockIncrement="1.0" majorTickUnit="5.0" max="0.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</HBox>

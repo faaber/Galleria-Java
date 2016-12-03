@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="mainPane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
+   <children>
+      <VBox fx:id="boxLogin" alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: whitesmoke;">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@resources/quadrifoglio.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="fieldUsername" promptText="Username" />
+            <PasswordField fx:id="fieldPassword" promptText="Password" />
+            <Button fx:id="buttonLogin" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#effettuaLogin" text="Login" VBox.vgrow="SOMETIMES" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="boxApplicazione" style="-fx-background-color: whitesmoke;">
+         <children>
+            <TabPane fx:id="tabMenu" style="-fx-background-color: whitesmoke;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+               <tabs>
+                  <Tab fx:id="tabIlluminazione" closable="false" styleClass="testo_icone" text="Illuminazione">
+                     <content>
+                        <fx:include source="IlluminazioneView.fxml" />
+                     </content>
+                  </Tab>
+                  <Tab fx:id="tabPAI" closable="false" text="P.A.I.">
+                     <content>
+                        <fx:include source="PAIView.fxml" />
+                     </content></Tab>
+                  <Tab fx:id="tabTraffico" closable="false" text="Traffico">
+                     <content>
+                        <fx:include source="TrafficoView.fxml" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <HBox alignment="CENTER" styleClass="area_di_selezione">
+               <children>
+                  <HBox alignment="CENTER" spacing="30.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="buttonAccetta" mnemonicParsing="false" onAction="#accettaModifiche" text="Accetta" BorderPane.alignment="CENTER" />
+                        <Button fx:id="buttonAnnulla" mnemonicParsing="false" onAction="#annullaModifiche" text="Annulla" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <Button fx:id="buttonManutenzione" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showMaintenanceWindow" text="Manutenzione" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" spacing="30.0" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label fx:id="valorePermesso" text="Permesso">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="::">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Label>
+                              <Label fx:id="valoreUser" text="User">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Button fx:id="buttonLogout" alignment="CENTER" mnemonicParsing="false" onAction="#effettuaLogout" text="Logout" textFill="RED">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

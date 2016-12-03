@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ManutenzioneController">
+   <children>
+      <SplitPane orientation="VERTICAL" prefHeight="480.0" prefWidth="525.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="525.0">
+               <children>
+                  <Text layoutX="35.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Striscia" />
+                  <Text layoutX="35.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Semafori" />
+                  <Text layoutX="36.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensore di temperatura" />
+                  <Button fx:id="cnSmf1" layoutX="199.0" layoutY="69.0" mnemonicParsing="false" onAction="#acAzioneSmf1" prefHeight="25.0" prefWidth="126.0" text="Semaforo 1" />
+                  <Button fx:id="cnSmf2" layoutX="356.0" layoutY="69.0" mnemonicParsing="false" onAction="#acAzioneSmf2" prefHeight="25.0" prefWidth="142.0" text="Semaforo 2" />
+                  <Rectangle fx:id="statusSmf1" arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="25.0" layoutX="275.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                  <Rectangle fx:id="statusTmp" arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="25.0" layoutX="355.0" layoutY="267.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                  <Text layoutX="199.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Semaforo 1" />
+                  <Rectangle fx:id="statusSmf2" arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="25.0" layoutX="449.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                  <Text layoutX="356.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Semaforo 2" />
+                  <Text layoutX="34.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IR" />
+                  <Button fx:id="cnSimulaIR1" layoutX="198.0" layoutY="166.0" mnemonicParsing="false" onAction="#acSimulaIR1" prefHeight="25.0" prefWidth="126.0" text="Simula IR1" />
+                  <Button fx:id="cnSimulaIR2" layoutX="355.0" layoutY="166.0" mnemonicParsing="false" onAction="#acSimulaIR2" prefHeight="25.0" prefWidth="142.0" text="Simula IR2" />
+                  <Rectangle fx:id="statusIR1" arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="25.0" layoutX="274.0" layoutY="204.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                  <Text layoutX="243.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IR1" />
+                  <Rectangle fx:id="statusIR2" arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="25.0" layoutX="449.0" layoutY="204.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                  <Text layoutX="419.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IR2" />
+                  <ProgressBar fx:id="cnBarraProgressoStriscia" layoutX="199.0" layoutY="22.0" prefHeight="18.0" prefWidth="126.0" progress="0.0" />
+                  <Text layoutX="35.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione IR1" wrappingWidth="143.13671875" />
+                  <TextField fx:id="cnPosizioneIR1" layoutX="35.0" layoutY="351.0" onAction="#acAggiornaPosizioneIR1" prefHeight="25.0" prefWidth="79.0" />
+                  <Text layoutX="127.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione IR2" wrappingWidth="143.13671875" />
+                  <TextField fx:id="cnPosizioneIR2" layoutX="127.0" layoutY="351.0" onAction="#acAggiornaPosizioneIR2" prefHeight="25.0" prefWidth="79.0" />
+                  <Button fx:id="cnIRLock" layoutX="275.0" layoutY="351.0" mnemonicParsing="false" onAction="#acIRLock" prefHeight="25.0" prefWidth="126.0" text="IR lock" />
+                  <Button fx:id="cnTmpLock" layoutX="417.0" layoutY="267.0" mnemonicParsing="false" onAction="#acTmpLock" prefHeight="25.0" prefWidth="79.0" text="tmp unlock" />
+                  <Button fx:id="cnCircolazione" layoutX="34.0" layoutY="107.0" mnemonicParsing="false" onAction="#acCircolazione" prefHeight="25.0" prefWidth="126.0" text="Custom" />
+                  <Button fx:id="cnArduinoCollegato" layoutX="199.0" layoutY="421.0" mnemonicParsing="false" onAction="#acArduinoCollegato" prefHeight="25.0" prefWidth="126.0" text="Imposta Arduino" />
+                  <Separator layoutX="-2.0" layoutY="44.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
+                  <Separator layoutY="141.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
+                  <Separator layoutX="-2.0" layoutY="229.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
+                  <Separator layoutY="305.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="525.0" />
+                  <Separator layoutX="1.0" layoutY="387.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
+                  <Button layoutX="198.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Button" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</Pane>
