@@ -66,6 +66,10 @@ public class ControlloAccesso {
     public Permesso getPermesso() {
         return ControlloAccesso.getInstance().permesso;
     }
+    
+    public String getUtenteLoggato(){
+        return utenteLoggato;
+    }
        
     public void richiediFunzione(Funzione pFunzione, Object parametro){
         if(permesso==null || !permesso.supporta(pFunzione))
