@@ -73,6 +73,8 @@ public class MainController implements Initializable {
     private Button buttonLogin;
     @FXML
     private Button buttonManutenzione;
+    @FXML
+    private Label labelAccessoNegato;
     
     //Elementi di supporto non grafici
     private Stage stageManutenzione;
@@ -80,7 +82,6 @@ public class MainController implements Initializable {
     private MyRadioButtonsWrapper myRbuttons;
     private UpdateThread aggiornaInterfaccia;
     protected boolean modifichePendenti;
-
     
     public MainController(){
         myRbuttons=new MyRadioButtonsWrapper();
@@ -102,6 +103,7 @@ public class MainController implements Initializable {
         
         // UI
         disabilitaPulsantiModifiche(true);
+        labelAccessoNegato.setVisible(false);
         
         // Creazione Stage per ManutenzioneView
         try {
@@ -165,9 +167,11 @@ public class MainController implements Initializable {
     @FXML
     private void effettuaLogin(ActionEvent event) {
         if(ControlloAccesso.getInstance().effettuaLogin(fieldUsername.textProperty().get(), fieldPassword.textProperty().get()) == null){
-            // TODO: Gestire accesso non riuscito
+            labelAccessoNegato.visibleProperty().set(true);
             return;
         }
+        labelAccessoNegato.visibleProperty().set(false);
+
         permesso=ControlloAccesso.getInstance().getPermesso();
         
         System.out.println("Connesso come "+permesso+"::"+fieldUsername.getText());

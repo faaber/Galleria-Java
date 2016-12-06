@@ -10,7 +10,7 @@ import controlloTraffico.IR;
 import controlloPAI.ControlloPAI;
 import controlloIlluminazione.ControlloIlluminazione;
 import controlloAccesso.ControlloAccesso;
-
+import DDI.DDI;
 import GUI.MainController;
 import arduino.LogicTask;
 import com.google.common.collect.ClassToInstanceMap;
@@ -54,12 +54,14 @@ public class Main extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.print("Inizializzazione dei controller... ");
+        System.out.print("Inizializzazione dei controller logici... ");
         ControlloTraffico.getInstance();
         IR.getInstance();
         ControlloPAI.getInstance();
         ControlloIlluminazione.getInstance();
         ControlloAccesso.getInstance();
+        if(DDI.getInstance()==null)
+            System.exit(1);
         
         Thread th = new Thread(LogicTask.getInstance());
         th.setDaemon(true);

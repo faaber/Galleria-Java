@@ -1,5 +1,6 @@
 package controlloAccesso;
 
+import DDI.DDI;
 import controlloIlluminazione.ControlloIlluminazione;
 import controlloIlluminazione.Criterio;
 import controlloTraffico.ControlloTraffico;
@@ -47,15 +48,17 @@ public class ControlloAccesso {
         
         // Richiamare il metodo "readUtente" del sottosistema DDI
         
-        // Inizio stub
-        utenteLoggato = username;
-        if(username.equals("Lorenzo"))
-            permesso=Permesso.OPERATORE;
-        else
-            permesso=Permesso.CONTROLLORE;
-        
-        return permesso; // Da modificare
-        // Fine stub
+        permesso=DDI.getInstance().readUtente(username, password);
+        return permesso;
+//        // Inizio stub
+//        utenteLoggato = username;
+//        if(username.equals("Lorenzo"))
+//            permesso=Permesso.OPERATORE;
+//        else
+//            permesso=Permesso.CONTROLLORE;
+//        
+//        return permesso; // Da modificare
+//        // Fine stub
     }
     
     public void effettuaLogout() {
@@ -65,6 +68,10 @@ public class ControlloAccesso {
     
     public Permesso getPermesso() {
         return ControlloAccesso.getInstance().permesso;
+    }
+    
+    public String getUtenteLoggato(){
+        return utenteLoggato;
     }
        
     public void richiediFunzione(Funzione pFunzione, Object parametro){

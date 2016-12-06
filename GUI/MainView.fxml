@@ -17,24 +17,6 @@
 
 <StackPane fx:id="mainPane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
    <children>
-      <VBox fx:id="boxLogin" alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: whitesmoke;">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/quadrifoglio.png" />
-               </image>
-            </ImageView>
-            <TextField fx:id="fieldUsername" promptText="Username" />
-            <PasswordField fx:id="fieldPassword" promptText="Password" />
-            <Button fx:id="buttonLogin" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#effettuaLogin" text="Login" VBox.vgrow="SOMETIMES" />
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-      </VBox>
       <VBox fx:id="boxApplicazione" style="-fx-background-color: whitesmoke;">
          <children>
             <TabPane fx:id="tabMenu" style="-fx-background-color: whitesmoke;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
@@ -103,6 +85,33 @@
                </VBox.margin>
             </HBox>
          </children>
+      </VBox>
+      <VBox fx:id="boxLogin" alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: whitesmoke;">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@resources/quadrifoglio.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="fieldUsername" promptText="Username" />
+            <PasswordField fx:id="fieldPassword" promptText="Password" />
+            <HBox spacing="5.0" VBox.vgrow="SOMETIMES">
+               <children>
+                  <Button fx:id="buttonLogin" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#effettuaLogin" text="Login" />
+                  <Label fx:id="labelAccessoNegato" maxHeight="1.7976931348623157E308" text="Username o password errati" textFill="RED">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
       </VBox>
    </children>
 </StackPane>
