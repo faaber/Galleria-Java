@@ -8,9 +8,13 @@ package GUI;
 import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloPAI.ControlloPAI;
+import static java.lang.Thread.sleep;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,20 +40,19 @@ public class PAIController implements Initializable {
 
     //Elementi di supporto non grafici
     private boolean paiInCorso;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paiInCorso=false;
-        
+        recuperaImpostazioniInUso();
         Main.GUIcontrollers.putInstance(PAIController.class, this);
     }    
 
     @FXML
     private void disattivaPAI(ActionEvent event) {
-        paiInCorso=!buttonDisattivaPAI.isSelected();
+        paiInCorso=false;
+        buttonDisattivaPAI.setSelected(true);
         ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
     }
     
@@ -57,8 +60,12 @@ public class PAIController implements Initializable {
     
     protected void adottaNuoveImpostazioni(){
         // Invio PAI al controller
+        System.out.println("arrivato1");
+
         if(buttonDisattivaPAI.isSelected()){
-            //ControlloPAI.getInstance().disattivaPAI();
+            buttonDisattivaPAI.setSelected(false);
+
+            System.out.println("arrivato2");
             ControlloAccesso.getInstance().richiediFunzione(Funzione.DISATTIVA_PAI, null);
 
             //Lazy trigger per essere certi di mantenere coerenza tra control e gui
@@ -67,9 +74,7 @@ public class PAIController implements Initializable {
     }
     
     protected void recuperaImpostazioniInUso(){
-        buttonDisattivaPAI.selectedProperty().set(false);
-        
-        // DA IMPLEMENTARE
+        //buttonDisattivaPAI.selectedProperty().set(false);
         paiInCorso=ControlloPAI.getInstance().isPAIAttiva();
         
         if(paiInCorso){
@@ -90,4 +95,11 @@ public class PAIController implements Initializable {
     protected boolean isPaiInCorso(){
         return paiInCorso;
     }
+    
+    protected boolean isPaiInCorsoIncoherent(){
+        if(ControlloPAI.getInstance().isPAIAttiva() && paiInCorso==false)
+            return true;
+        else
+            return false;
+    }  
 }

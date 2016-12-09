@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -152,15 +153,11 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void effettuaLogout(ActionEvent event) {
-        aggiornaInterfaccia.terminate();
-        
+    private void effettuaLogout(ActionEvent event) {        
         ControlloAccesso.getInstance().effettuaLogout();
         
         recuperaValoriInUso();
         disabilitaPulsantiModifiche(true);
-
-        stageManutenzione.hide();
         showLoginBox();
     }
 
@@ -179,14 +176,15 @@ public class MainController implements Initializable {
         recuperaValoriInUso();
         disabilitaPulsantiModifiche(true);
 
-        showAppBox();
-        
-        aggiornaInterfaccia=new UpdateThread(1000/60);
-        aggiornaInterfaccia.start();     
+        showAppBox();           
     }
     
     /**************************************************************************/
     private void showLoginBox(){
+        if(aggiornaInterfaccia!=null)
+            aggiornaInterfaccia.terminate();
+        stageManutenzione.hide();
+
         boxLogin.toFront();
         boxApplicazione.toBack();
         ((Stage)mainPane.getScene().getWindow()).setWidth(LOGIN_W);
@@ -199,6 +197,8 @@ public class MainController implements Initializable {
         ((Stage)mainPane.getScene().getWindow()).setWidth(APP_W);
         ((Stage)mainPane.getScene().getWindow()).setHeight(APP_H);
         ((Stage)mainPane.getScene().getWindow()).setResizable(true);
+        aggiornaInterfaccia=new UpdateThread(60D);
+        aggiornaInterfaccia.start();  
     }
     @FXML
     private void showMaintenanceWindow(){
@@ -218,7 +218,7 @@ public class MainController implements Initializable {
         buttonAnnulla.setDisable(b);
     }
     
-    private void recuperaValoriInUso(){
+    protected void recuperaValoriInUso(){
         ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).recuperaImpostazioniInUso();
         ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).recuperaImpostazioniInUso();
         ((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).recuperaImpostazioniInUso();
@@ -257,9 +257,9 @@ public class MainController implements Initializable {
     private class UpdateThread extends Thread{
         
         private boolean stopRequested;
-        private long freq;
+        private double freq;
         
-        public UpdateThread(int freq) {
+        public UpdateThread(double freq) {
             super();
             stopRequested=false;
             this.freq=freq;
@@ -268,20 +268,28 @@ public class MainController implements Initializable {
         
         @Override
         public void run() {
+            Runnable operation=()->{((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).recuperaValoriInUso();};
+            long lastTime=System.nanoTime(), now;
+            double nsOp1=1000000000/freq;                                     //16666666.6667 ns sono 16ms, l'intervallo di tempo che deve esserci tra un update e l'altro per per averne 60 al secondo
+            double nsOp2=1000000000/(freq/3);
+            double deltaOp1=0, deltaOp2=0;
+            
             while(!stopRequested){
-                // TODO: aggiornare temperatura e altri valori
-
-                // Aggiornamento grafico e Pulsanti modifica
-                ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).aggiornaCurva();
-                if(modifichePendenti)
-                    disabilitaPulsantiModifiche(false);
-
-                                
-                // Attesa per il prossimo aggiornamento
-                try {
-                    sleep(freq);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                now=System.nanoTime();
+                deltaOp1+=(now-lastTime)/nsOp1;                                           //delta=tempo trascorso rispetto ai 16 ms (60 game update al secondo)
+                deltaOp2+=(now-lastTime)/nsOp2;
+                lastTime=now;
+                if(deltaOp1>=1){
+                    // Aggiornamento grafico e Pulsanti modifica
+                    ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).aggiornaCurva();
+                    if(modifichePendenti)
+                        disabilitaPulsantiModifiche(false);
+                    deltaOp1--;
+                }
+                if(deltaOp2>=1){
+                    if(((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorsoIncoherent())
+                            Platform.runLater(operation);
+                    deltaOp2--;
                 }
             }
         }
