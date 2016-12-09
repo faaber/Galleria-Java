@@ -40,15 +40,17 @@ public class ManutenzioneController implements Initializable {
     @FXML
     private Button cnArduinoCollegato;
     @FXML
+    private Button cnSimulaIR1;
+    @FXML
+    private Button cnSimulaIR2;
+    @FXML
+    private Button cnSimulaTmp;
+    @FXML
     private Rectangle statusSmf1;
     @FXML
     private Rectangle statusTmp;
     @FXML
     private Rectangle statusSmf2;
-    @FXML
-    private Button cnSimulaIR1;
-    @FXML
-    private Button cnSimulaIR2;
     @FXML
     private Rectangle statusIR1;
     @FXML
@@ -63,6 +65,7 @@ public class ManutenzioneController implements Initializable {
     // Variabili non relative agli elementi dell'interfaccia grafica
     
     private boolean isTaskCreato = false;
+    private boolean simulaTmpAlta = true;
     private double posizioneVetturaBarraProgresso = 0.0;
 
     /**
@@ -182,7 +185,6 @@ public class ManutenzioneController implements Initializable {
     private void acTmpLock(ActionEvent event) {
         if (ControlloPAI.getInstance().isTemperaturaLock()) {
             ControlloPAI.getInstance().setTemperaturaLock(false);
-            ControlloPAI.getInstance().setTemperaturaAttivato(false);
             cnTmpLock.setText("tmp lock");
             System.out.println("Tmp unlocked.");
         }
@@ -219,6 +221,20 @@ public class ManutenzioneController implements Initializable {
     private void acSimulaIR2(ActionEvent event) {
         IR.getInstance().ricevutoInputIR2Occluso(true);
         IR.getInstance().ricevutoInputIR2Occluso(false);
+    }
+    
+    @FXML
+    private void acSimulaTmp (ActionEvent event) {
+        if (simulaTmpAlta) {
+            ControlloPAI.getInstance().ricevutoInputTemperaturaAlta();
+            cnSimulaTmp.setText("Simula tmp bassa");
+        }
+        else {
+            ControlloPAI.getInstance().ricevutoInputTemperaturaBassa();
+            cnSimulaTmp.setText("Simula tmp alta");
+        }
+        
+        simulaTmpAlta = !simulaTmpAlta;
     }
 
     @FXML

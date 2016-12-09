@@ -47,7 +47,7 @@
                   <Separator layoutX="-2.0" layoutY="229.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
                   <Separator layoutY="305.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="525.0" />
                   <Separator layoutX="1.0" layoutY="387.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="523.0" />
-                  <Button layoutX="198.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Button" />
+                  <Button fx:id="cnSimulaTmp" layoutX="198.0" layoutY="267.0" mnemonicParsing="false" onAction="#acSimulaTmp" prefHeight="25.0" prefWidth="126.0" text="Simula tmp alta" />
                </children>
             </AnchorPane>
         </items>

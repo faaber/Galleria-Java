@@ -17,32 +17,36 @@ public final class ControlloPAI {
      */
     private boolean temperaturaAlta = false;
     /**
-     * Specifica se dev'essere attivo il lock sulla temperatura, ossia la
+     * Indica qual è l'ultimo stato della temperatura rilevato (valore booleano,
+     * positivo se la temperatura e' alta). Se questo valore non viene cambiato
+     * per un intervallo pari a <code>ritardoAttivazione</code>, la variabile
+     * <code>temperaturaAlta</code> viene aggiornata.
+     */
+    private boolean temperaturaAltaCandidata = false;
+    /**
+     * Specifica se dev'essere attivo il lock sulla temperatura, in tal caso, la
      * temperatura viene rilevata come alta solo se non ci sono input bassi
      * per un fissato numero di millisecondi
      */
     private boolean temperaturaLock = false;
     /**
-     * Indica se la temperatura e' stata rilevata come alta per un fissato
-     * numero di millisecondi. Corrisponde alla rilevazione dell'incendio
+     * Indica se la procedura antincendio e' stata attivata.
      */
-    private boolean temperaturaAttivato = false;
+    private boolean proceduraAttivata = false;
     private int sogliaTemperatura = 24;
-    
-    /**
-     * Specifica se la data memorizzata nella variabile <code>data</code>
-     * e' valida
-     */
-    private boolean isDataValida = false;
     /**
      * Istante di ricezione del piu' recente input di temperatura alta
      */
     private Date data;
     /**
-     * Ritardo in millisecondi prima dell'impostazione della temperatura alta
- quando Arduino.temperaturaLock è <code>true</code>
+     * Attributo ausiliario per la gestione delle date
      */
-    private long ritardoAttivazione = 500;
+    private Date dataAux;
+    /**
+     * Ritardo in millisecondi prima dell'impostazione della temperatura alta
+     * quando temperaturaLock è <code>true</code>
+     */
+    private long ritardoAttivazione = 20;
     /**
      * Variabile utilizzata per effettuare il controllo di routine dell'assenza
      * di un input di temperatura bassa
@@ -52,6 +56,9 @@ public final class ControlloPAI {
     private boolean PAIAttiva = false;
     
     private ControlloPAI() {
+        dataAux = new Date();
+        data = new Date();
+        data.setTime(dataAux.getTime() - 10000);
     }
     
     /**
@@ -65,45 +72,28 @@ public final class ControlloPAI {
     }
     
     public void ricevutoInputTemperaturaAlta() {
-        if (!isTemperaturaLock()) {
-            setTemperaturaAlta();
-        }
-        if (!isDataValida) {
+        if (!temperaturaAltaCandidata) {
+            temperaturaAltaCandidata = true;
             data = new Date();
-            isDataValida = true;
         }
     }
     
     public void ricevutoInputTemperaturaBassa() {
-        if (!isTemperaturaLock()) {
-            setTemperaturaBassa();
-        }
-        if (isDataValida) {
-            isDataValida = false;
+        if (temperaturaAltaCandidata) {
+            temperaturaAltaCandidata = false;
+            data = new Date();
         }
     }
     
-    public void setTemperaturaAlta() {
-        setTemperaturaAlta(true);
-    }
-    
-    public void setTemperaturaBassa() {
-        setTemperaturaAlta(false);
-    }
-    
-    public void eseguiOperazioniTemperatura() {
-        if (isTemperaturaLock() && isDataValida &&
-                !isTemperaturaAttivato()) {
-            dataCheck = new Date();
-            
-            if (dataCheck.getTime() > data.getTime() + ritardoAttivazione) {
-                setTemperaturaAlta();
-                attivaProceduraAntincendio();
-            }
+    public void eseguiOperazioniPAI() {
+        dataCheck = new Date();
+
+        if (dataCheck.getTime() > data.getTime() + ritardoAttivazione) {
+            temperaturaAlta = temperaturaAltaCandidata;
         }
-        else if (!isTemperaturaLock() && !isDataValida &&
-                !isTemperaturaAttivato()) {
-            setTemperaturaBassa();
+        
+        if (temperaturaLock && temperaturaAlta && !PAIAttiva) {
+            attivaPAI();
         }
     }
     
@@ -114,11 +104,13 @@ public final class ControlloPAI {
      * della PAI nel database
      */
     public void attivaPAI() {
-        PAIAttiva = true;
-        
-        ControlloIlluminazione.getInstance().setCriterioDinamicoAttivo(false);
-        ControlloTraffico.getInstance().setCircolazione(Circolazione.INTERDETTA);
-        // Operazione da aggiungere: registra l'attivazione della PAI nel database        
+        if (!PAIAttiva) {
+            PAIAttiva = true;
+
+            ControlloIlluminazione.getInstance().setCriterioDinamicoAttivo(false);
+            ControlloTraffico.getInstance().setCircolazione(Circolazione.INTERDETTA);
+            // Da aggiungere: registra l'attivazione della PAI nel database
+        }
     }
     
     /**
@@ -126,19 +118,16 @@ public final class ControlloPAI {
      * della galleria, registrando la disattivazione della PAI nel database
      */
     public void disattivaPAI() {
-        PAIAttiva = false;
-        
-        // Opereazione da aggiungere: registra la disattivazione della PAI nel database
+        if (PAIAttiva && !temperaturaAlta) {
+            PAIAttiva = false;
+
+            // Operazione da aggiungere: registra la disattivazione della PAI nel database
+        }
     }
 
     public boolean isPAIAttiva() {
         return PAIAttiva;
     }
-    
-    private void attivaProceduraAntincendio() {
-        setTemperaturaAttivato(true);
-    }
-    
     
     public boolean isTemperaturaLock() {
         return temperaturaLock;
@@ -146,14 +135,6 @@ public final class ControlloPAI {
 
     public void setTemperaturaLock(boolean temperaturaLock) {
         this.temperaturaLock = temperaturaLock;
-    }
-
-    public boolean isTemperaturaAttivato() {
-        return temperaturaAttivato;
-    }
-
-    public void setTemperaturaAttivato(boolean temperaturaAttivato) {
-        this.temperaturaAttivato = temperaturaAttivato;
     }
 
     public int getSogliaTemperatura() {
@@ -167,8 +148,4 @@ public final class ControlloPAI {
     public boolean isTemperaturaAlta() {
         return temperaturaAlta;
     }
-
-    public void setTemperaturaAlta(boolean temperaturaAlta) {
-        this.temperaturaAlta = temperaturaAlta;
-    }
-} 
+}

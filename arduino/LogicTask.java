@@ -20,7 +20,7 @@ public final class LogicTask extends Task<Integer> {
     
     private static LogicTask instance = null;
     
-    private static SerialPort serialPort = new SerialPort("COM4");
+    private static SerialPort serialPort = new SerialPort("COM3");
     
     private LogicTask() {
     }
@@ -80,11 +80,9 @@ public final class LogicTask extends Task<Integer> {
                 if (buffer != null) {
                     parseBuffer(buffer);
                 }
-                
-                // ControlloPAI
-                ControlloPAI.getInstance().eseguiOperazioniTemperatura();
             }
             
+            ControlloPAI.getInstance().eseguiOperazioniPAI();
             ControlloTraffico.getInstance().eseguiOperazioniTraffico();
             ControlloIlluminazione.getInstance().eseguiOperazioniIlluminazione();
         }

@@ -209,7 +209,7 @@ public final class ControlloIlluminazione {
         // stampaIntensitaLED();
     }
     
-    private void impostaLEDSpenti() {
+    public void impostaLEDSpenti() {
         for (int i = 0; i < numeroLEDStriscia; i++) {
             intensitaLED[i] = 0;
         }
