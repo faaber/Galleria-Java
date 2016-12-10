@@ -60,12 +60,10 @@ public class PAIController implements Initializable {
     
     protected void adottaNuoveImpostazioni(){
         // Invio PAI al controller
-        System.out.println("arrivato1");
 
         if(buttonDisattivaPAI.isSelected()){
             buttonDisattivaPAI.setSelected(false);
 
-            System.out.println("arrivato2");
             ControlloAccesso.getInstance().richiediFunzione(Funzione.DISATTIVA_PAI, null);
 
             //Lazy trigger per essere certi di mantenere coerenza tra control e gui

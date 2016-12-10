@@ -119,11 +119,11 @@ public class DDI {
     }
 
     /**
-     * Effettua l'autenticazione dell'utente
+     * Effettua l'autenticazione dell'utente.
      *
-     * @param username Username da verificare
-     * @param password Password immessa
-     * @return Livello autorizzazione oppure null
+     * @param username Username da verificare.
+     * @param password Password immessa.
+     * @return L'istanza di un <code>Permesso</code> oppure <code>null</code>.
      */
     public Permesso readUtente(String username, String password) {
         Permesso permesso = null;
@@ -137,7 +137,6 @@ public class DDI {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
             try {
-                /*QUERY FUNZIONANTE MANCA CONTROLLO CONTROLLO VERIDICITà CON I DATI INSERITI TEXTFIELD*/
                 ResultSet rs = stmt.executeQuery("select Livello_accesso from utente where Username = '" + username + "' and Password = '" + password + "'");
                 if (rs.next() == true) {
                     switch (rs.getString(1)) {
@@ -167,37 +166,25 @@ public class DDI {
     }
 
     /**
-     * Scrive nel database l'informazione dell'attivazione o disattivazione
-     * della procedura antincendio
-     *
-     * @param isAttiva <code>true</code> se la procedura viene attivata,
-     * <code>false</code> se la procedura viene disattivata
+     * Registra nel database l'attivazione della PAI.
+     * @return <code>true/false</code> in base al fatto che la registrazione nel db sia andata
+     * a buon fine o meno
      */
-    public void writePAI(boolean isAttiva) {
-        try {
-            /* Operazioni: scrive nel database lo stato di attivazione della procedura
-            * antincendio e memorizza ora e data (con gli appositi operatori SQL)
-            * ATTENZIONE: MANCA VERIFICA DI CONSISTENZA SULL'UTENTE CHE EFFETTUA TALE OPERAZIONE
+    public boolean writeAttivazionePAI() {
+            /*
+             * ATTENZIONE
+             * Allo stato attuale è possibile generare record di attivazione
+             * anche in caso ve ne sia uno non ancora chiuso (per esempio
+             * se avete chiuso il programma dopo aver attivato la PAI)
              */
-            String username = ControlloAccesso.getInstance().getUtenteLoggato();
-            if ((username != null && isAttiva == true) || (username == null && isAttiva == false)) {
-                return;
-            }
+        try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            con = getConnection();
             try {
-                /*QUERY FUNZIONANTE SU WORCKBENCH NON COMPLETATA VISTO CHE DEVE ESSERE CAMBIATA CON I TEXTFIELD DI JAVAFX */
-                if (username == null) {
-                    username = "";
-                }
-                stmt.executeUpdate("insert into attivazione_pai (username_responsabile) value ('" + username + "')");
-
-                /*PreparedStatement stm = null;
-                stm = con.prepareStatement("insert into attivazione_pai (username_responsabile) value (\"?\")");
-                stm.setString(1, Username);
-                
-                }*/
+                if(stmt.executeUpdate("insert into attivazione_pai (username_responsabile) value (NULL)")==0)
+                    System.out.println("shiet");
+                else
+                    System.out.println("ok");
                 con.commit();
             } finally {
 
@@ -210,6 +197,54 @@ public class DDI {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DDI.class.getName()).log(Level.SEVERE, "Si è verificato un problema con l'accesso al db", ex);
+            return false;
+        }      
+        return true;
+    }
+    
+    /**
+     * Registra nel database la disattivazione della PAI da parte di un utente.
+     * @param username L'utente che ha effettuato la disattavazione.
+     * @return <code>true/false</code> in base al fatto che la registrazione nel db sia andata
+     * a buon fine o meno.
+     */
+    public boolean writeDisattivazionePAI(String username){
+           /*
+            * ATTENZIONE
+            * Allo stato attuale non è presente alcuna verifica sull'utente che
+            * ha chiamato tale procedura, è pertanto possibile dichiarare che un
+            * username non registrato al db abbia chiuso un record d'attivazione.
+            * Inoltre, a causa delle mancanze della procedura di apertura di un
+            * nuovo record, la chiusura viene effettuata sull'ultimo record
+            * aperto ma non chiuso in ordine temporale (tra i vari che
+            * potrebbero essere presenti).
+            */
+       try {
+            if (username == null)
+                return false;
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+            try {
+                stmt.executeQuery("SELECT id FROM galleria.attivazione_pai where data_disattivazione LIKE '0000-00-00 00:00:00' ORDER BY id DESC LIMIT 1;");
+                ResultSet rs=stmt.getResultSet();
+                if(rs.next()==false)
+                    return false;
+                String id=rs.getString(1);
+                stmt.executeUpdate("UPDATE `galleria`.`attivazione_pai` SET `username_responsabile`='"+username+"' WHERE `id`="+id+";");
+                con.commit();
+            } finally {
+
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (con != null) {
+                    RilasciaConnessione(con);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DDI.class.getName()).log(Level.SEVERE, "Si è verificato un problema con l'accesso al db", ex);
+            return false;
         }
+       return true;
     }
 }

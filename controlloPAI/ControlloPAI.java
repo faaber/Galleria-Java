@@ -1,8 +1,10 @@
 package controlloPAI;
 
+import controlloAccesso.ControlloAccesso;
 import controlloIlluminazione.ControlloIlluminazione;
 import controlloTraffico.Circolazione;
 import controlloTraffico.ControlloTraffico;
+import DDI.DDI;
 import java.util.Date;
 
 /**
@@ -109,7 +111,8 @@ public final class ControlloPAI {
 
             ControlloIlluminazione.getInstance().setCriterioDinamicoAttivo(false);
             ControlloTraffico.getInstance().setCircolazione(Circolazione.INTERDETTA);
-            // Da aggiungere: registra l'attivazione della PAI nel database
+            
+            DDI.getInstance().writeAttivazionePAI();
         }
     }
     
@@ -121,7 +124,7 @@ public final class ControlloPAI {
         if (PAIAttiva && !temperaturaAlta) {
             PAIAttiva = false;
 
-            // Operazione da aggiungere: registra la disattivazione della PAI nel database
+            DDI.getInstance().writeDisattivazionePAI(ControlloAccesso.getInstance().getUtenteLoggato());
         }
     }
 

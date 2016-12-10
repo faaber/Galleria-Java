@@ -285,6 +285,8 @@ public final class ControlloIlluminazione {
     }
 
     public void setCriterioDinamicoAttivo(boolean criterioDinamicoAttivo) {
+        if(criterioDinamicoAttivo)
+            impostaLEDSpenti();
         this.criterioDinamicoAttivo = criterioDinamicoAttivo;
     }
     

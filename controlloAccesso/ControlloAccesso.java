@@ -37,18 +37,14 @@ public class ControlloAccesso {
      * Effettua un tentativo di login
      * @param username Utente da loggare
      * @param password Password inserita
-     * @return <code>true</code> se l'autenticazione ha avuto successo,
-     *         <code>false</code> altrimenti
+     * @return L'istanza di un <code>Permesso</code> se l'autenticazione ha avuto successo,
+     *         <code>null</code> altrimenti
      */
     public Permesso effettuaLogin(String username, String password) {
-        /* Richiama il metodo 'readUtente' nella classe DDI nel package DDI.
-         * Se il login ha successo memorizza l'utente loggato nella variabile
-         * "utenteLoggato"
-         */
-        
-        // Richiamare il metodo "readUtente" del sottosistema DDI
         
         permesso=DDI.getInstance().readUtente(username, password);
+        if(permesso!=null)
+            utenteLoggato=username;
         return permesso;
 //        // Inizio stub
 //        utenteLoggato = username;
