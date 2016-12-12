@@ -51,16 +51,19 @@ public class PAIController implements Initializable {
 
     @FXML
     private void disattivaPAI(ActionEvent event) {
-        paiInCorso=false;
-        buttonDisattivaPAI.setSelected(true);
-        ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
+        if(buttonDisattivaPAI.isSelected()){
+            paiInCorso=false;
+            ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
+        }
+        else{
+            paiInCorso=true;
+            ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).disabilitaPulsantiModifiche(true);
+        }
     }
     
     /**************************************************************************/
     
     protected void adottaNuoveImpostazioni(){
-        // Invio PAI al controller
-
         if(buttonDisattivaPAI.isSelected()){
             buttonDisattivaPAI.setSelected(false);
 
@@ -72,7 +75,7 @@ public class PAIController implements Initializable {
     }
     
     protected void recuperaImpostazioniInUso(){
-        //buttonDisattivaPAI.selectedProperty().set(false);
+        buttonDisattivaPAI.selectedProperty().set(false);
         paiInCorso=ControlloPAI.getInstance().isPAIAttiva();
         
         if(paiInCorso){
@@ -95,7 +98,7 @@ public class PAIController implements Initializable {
     }
     
     protected boolean isPaiInCorsoIncoherent(){
-        if(ControlloPAI.getInstance().isPAIAttiva() && paiInCorso==false)
+        if(ControlloPAI.getInstance().isPAIAttiva() && paiInCorso==false && !buttonDisattivaPAI.isSelected())
             return true;
         else
             return false;

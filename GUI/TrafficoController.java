@@ -82,14 +82,17 @@ public class TrafficoController implements Initializable {
         sliderDurataRossoAggiuntiva.setMin(controlloTraffico.ControlloTraffico.DURATA_MIN);
        
         // Aggiunta di un changeListener agli slider in grado di aggiornare le relative labels
+        valoreDurataVerdeSX.textProperty().setValue(String.valueOf((int)sliderDurataVerdeSX.getValue()));
         sliderDurataVerdeSX.valueProperty().addListener((observable, oldValue, newValue) -> {
             valoreDurataVerdeSX.textProperty().setValue(String.valueOf((int)sliderDurataVerdeSX.getValue()));
             ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
         });
+        valoreDurataVerdeDX.textProperty().setValue(String.valueOf((int)sliderDurataVerdeDX.getValue()));
         sliderDurataVerdeDX.valueProperty().addListener((observable, oldValue, newValue) -> {
             valoreDurataVerdeDX.textProperty().setValue(String.valueOf((int)sliderDurataVerdeDX.getValue()));
             ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
         });
+        valoreDurataRossoAggiuntiva.textProperty().setValue(String.valueOf((int)sliderDurataRossoAggiuntiva.getValue()));
         sliderDurataRossoAggiuntiva.valueProperty().addListener((observable, oldValue, newValue) -> {
             valoreDurataRossoAggiuntiva.textProperty().setValue(String.valueOf((int)sliderDurataRossoAggiuntiva.getValue()));
             ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;

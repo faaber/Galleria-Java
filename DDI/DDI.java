@@ -47,15 +47,22 @@ public class DDI {
         } catch (IOException ex) {
             Logger.getLogger(DDI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try{
         CaricaDriver();
         RilasciaConnessione(getConnection()); // test di connessione
+        }catch(ClassNotFoundException | SQLException e){
+            Logger.getLogger(DDI.class.getName()).log(Level.SEVERE, "Le credenziali caricate non sono valide, carico credenziali di default\n", e);
+            CaricaCredenzialiDefault();
+            CaricaDriver();
+            RilasciaConnessione(getConnection()); // test di connessione
+        }
     }
 
     private static void CaricaCredenzialiDefault() {
         ProprietàDB.setProperty("driver", "org.gjt.mm.mysql.Driver");
-        ProprietàDB.setProperty("url", "jdbc:mysql://localhost/tunnel_db");
+        ProprietàDB.setProperty("url", "jdbc:mysql://localhost/galleria");
         ProprietàDB.setProperty("username", "root");
-        ProprietàDB.setProperty("password", "admin");
+        ProprietàDB.setProperty("password", "1234");
     }
 
     private static synchronized Connection getConnection() throws SQLException {
@@ -99,6 +106,8 @@ public class DDI {
     }
 
     private static void CaricaDriver() throws ClassNotFoundException {
+        if(ProprietàDB.getProperty("driver")==null)
+            throw new ClassNotFoundException();
         Class.forName(ProprietàDB.getProperty("driver"));
     }
 
@@ -181,10 +190,7 @@ public class DDI {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
             try {
-                if(stmt.executeUpdate("insert into attivazione_pai (username_responsabile) value (NULL)")==0)
-                    System.out.println("shiet");
-                else
-                    System.out.println("ok");
+                stmt.executeUpdate("insert into attivazione_pai (username_responsabile) value (NULL)");
                 con.commit();
             } finally {
 

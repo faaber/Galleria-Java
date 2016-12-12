@@ -133,17 +133,12 @@ public class MainController implements Initializable {
 
     @FXML
     private void accettaModifiche(ActionEvent event) {
-        // TODO: Comunica con i relativi control e fornisci loro i nuovi dati da impostare
-        
-        // Disabilita i pulsanti
-        disabilitaPulsantiModifiche(true);
-        
         ((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).adottaNuoveImpostazioni();
         ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).adottaNuoveImpostazioni();
         ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).adottaNuoveImpostazioni();
         
         contestualizzaInterfaccia();
-
+        disabilitaPulsantiModifiche(true);
     }
 
     @FXML
@@ -231,22 +226,26 @@ public class MainController implements Initializable {
      * Viene richiamata per consentire le funzionalità in base al tipo di accesso effettuato e allo stato della PAI
      */
     private void contestualizzaInterfaccia(){
+        buttonManutenzione.setDisable(false);
         valoreUser.textProperty().set(fieldUsername.getText());
+        boolean paiInCorso=((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorso();
         switch(permesso){
             case OPERATORE:
                 valorePermesso.textProperty().set("Operatore");
                 ((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).disabilitaVista(false);
-                boolean paiInCorso=((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorso();
                 ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).disabilitaVista(paiInCorso);
                 ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).disabilitaVista(paiInCorso);
-                buttonManutenzione.setDisable(false);
+                disabilitaPulsantiModifiche(paiInCorso);
+                ((ManutenzioneController)Main.GUIcontrollers.getInstance(ManutenzioneController.class)).disabilitaVista(false);
                 break;
             case CONTROLLORE:
                 valorePermesso.textProperty().set("Controllore");
                 ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).disabilitaVista(true);
                 ((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).disabilitaVista(true);
                 ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).disabilitaVista(true);
-                buttonManutenzione.setDisable(true);
+                disabilitaPulsantiModifiche(paiInCorso);
+                ((ManutenzioneController)Main.GUIcontrollers.getInstance(ManutenzioneController.class)).disabilitaVista(true);
+
                 break;
         }       
     }
@@ -268,7 +267,7 @@ public class MainController implements Initializable {
         
         @Override
         public void run() {
-            Runnable operation=()->{((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).recuperaValoriInUso();};
+            Runnable operation=()->{recuperaValoriInUso();};
             long lastTime=System.nanoTime(), now;
             double nsOp1=1000000000/freq;                                     //16666666.6667 ns sono 16ms, l'intervallo di tempo che deve esserci tra un update e l'altro per per averne 60 al secondo
             double nsOp2=1000000000/(freq/3);

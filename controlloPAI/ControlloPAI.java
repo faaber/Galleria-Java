@@ -109,6 +109,7 @@ public final class ControlloPAI {
         if (!PAIAttiva) {
             PAIAttiva = true;
 
+            ControlloIlluminazione.getInstance().setIntensitaCriterioCostante(ControlloIlluminazione.INTENSITA_MAX);
             ControlloIlluminazione.getInstance().setCriterioDinamicoAttivo(false);
             ControlloTraffico.getInstance().setCircolazione(Circolazione.INTERDETTA);
             
