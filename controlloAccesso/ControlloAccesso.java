@@ -6,6 +6,8 @@ import controlloIlluminazione.Criterio;
 import controlloTraffico.ControlloTraffico;
 import controlloPAI.ControlloPAI;
 import controlloTraffico.Circolazione;
+import eccezioni.PAIAttivaException;
+import eccezioni.PermessoInsufficienteException;
 
 public class ControlloAccesso {
     
@@ -70,10 +72,23 @@ public class ControlloAccesso {
         return utenteLoggato;
     }
        
-    public void richiediFunzione(Funzione pFunzione, Object parametro){
-        if(permesso==null || !permesso.supporta(pFunzione))
-            return;
+    public void richiediFunzione(Funzione pFunzione, Object parametro) throws PermessoInsufficienteException, PAIAttivaException{
         
+        if(permesso==null || !permesso.supporta(pFunzione))
+            throw new PermessoInsufficienteException();
+        if(ControlloPAI.getInstance().isPAIAttiva()==true){
+            if(permesso==Permesso.OPERATORE){
+                if(pFunzione==Funzione.DISATTIVA_PAI){
+                    ControlloPAI.getInstance().disattivaPAI();
+                    return;
+                }
+                else
+                    throw new PAIAttivaException();
+            }
+            else
+                throw new PAIAttivaException();        
+        }       
+                
         switch(pFunzione){
             case SET_LIVELLO_CM:
                 ControlloIlluminazione.getInstance().setIntensitaCriterioCostante((int) parametro);

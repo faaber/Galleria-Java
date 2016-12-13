@@ -9,7 +9,8 @@ import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloPAI.ControlloPAI;
 import static java.lang.Thread.sleep;
-
+import eccezioni.PAIAttivaException;
+import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -67,8 +68,8 @@ public class PAIController implements Initializable {
         if(buttonDisattivaPAI.isSelected()){
             buttonDisattivaPAI.setSelected(false);
 
-            ControlloAccesso.getInstance().richiediFunzione(Funzione.DISATTIVA_PAI, null);
-
+            //ControlloPAI.getInstance().disattivaPAI();
+            richiediFunzioneSafely(Funzione.DISATTIVA_PAI, null);
             //Lazy trigger per essere certi di mantenere coerenza tra control e gui
             recuperaImpostazioniInUso();
         }
@@ -103,4 +104,14 @@ public class PAIController implements Initializable {
         else
             return false;
     }  
+
+    private boolean richiediFunzioneSafely(Funzione pF, Object a){
+        try {
+            ControlloAccesso.getInstance().richiediFunzione(pF, a);
+        } catch (PermessoInsufficienteException | PAIAttivaException ex) {
+            Logger.getLogger(TrafficoController.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
 }

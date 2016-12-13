@@ -10,8 +10,12 @@ import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloIlluminazione.ControlloIlluminazione;
 import controlloIlluminazione.Criterio;
+import eccezioni.PAIAttivaException;
+import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +35,7 @@ import main.Main;
  *
  * @author Lorenzo
  */
-public class IlluminazioneController implements Initializable {
+public class IlluminazioneController extends SettoreController implements Initializable {
 
     @FXML
     private VBox containerIlluminazione;                                        //Trattato come Node
@@ -85,19 +89,19 @@ public class IlluminazioneController implements Initializable {
         Main.GUIcontrollers.putInstance(IlluminazioneController.class, this);
         
     }
-    private void associaPulsantiAdEnum(){
-        myRbuttons.add(rButtonCriterioCostMan, Criterio.COSTANTE_MANUALE);
-        myRbuttons.add(rButtonCriterioDinamico, Criterio.DINAMICO);
-    }
 
     @FXML
     private void cambiaCriterio(ActionEvent event) {
         criterio=(Criterio)myRbuttons.getEnum((RadioButton)event.getSource());
         ((MainController)(Main.GUIcontrollers.getInstance(MainController.class))).modifichePendenti=true;
         System.out.println("Richiedi criterio: "+criterio);
-
     }
     
+    /**
+     * Aggiorna il grafico della curva d'illuminazione richiedendo i dati recenti
+     * al controller logico sottostante
+     * @see ControlloIlluminazione#getIntensitaLED() 
+     */
     protected void aggiornaCurva(){
         int aux[]=ControlloIlluminazione.getInstance().getIntensitaLED();
         for(int i=0; i<ControlloIlluminazione.NUM_LED; i++){
@@ -106,24 +110,34 @@ public class IlluminazioneController implements Initializable {
         }
         //System.out.println();
     }
-    
+
+    @Override
+    protected void associaPulsantiAdEnum() {
+        myRbuttons.add(rButtonCriterioCostMan, Criterio.COSTANTE_MANUALE);
+        myRbuttons.add(rButtonCriterioDinamico, Criterio.DINAMICO);
+    }
+
+    @Override
     protected void recuperaImpostazioniInUso(){
         sliderLivelloCM.valueProperty().set(ControlloIlluminazione.getInstance().getIntensitaCriterioCostante());
         criterio=ControlloIlluminazione.getInstance().obtainCriterio();
         myRbuttons.getButton(criterio).selectedProperty().set(true);
         // Aggiorna curva dovrebbe in qualche modo finire qui dentro?
     }
+    @Override
     protected void adottaNuoveImpostazioni(){
         //ControlloIlluminazione.getInstance().provideCriterio(criterio);
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_CRITERIO, criterio);
+        richiediFunzioneSafely(Funzione.SET_CRITERIO, criterio);
         //ControlloIlluminazione.getInstance().setIntensitaCriterioCostante((int)sliderLivelloCM.getValue());
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_LIVELLO_CM, (int)sliderLivelloCM.getValue());
+        richiediFunzioneSafely(Funzione.SET_LIVELLO_CM, (int)sliderLivelloCM.getValue());
         
         //Lazy trigger per essere certi di mantenere coerenza tra control e gui
         recuperaImpostazioniInUso();
     }
+    @Override
     protected void disabilitaVista(boolean val){
         containerIlluminazione.disableProperty().set(val);
     }
+    
     
 }

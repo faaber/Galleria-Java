@@ -28,6 +28,10 @@ public enum Permesso {
         return false;
     }
     
+    public Funzione[] getFunzioni(){
+        return funzioni.clone();
+    }
+    
     private final Funzione[] funzioni;
     
     private Permesso(Funzione... pFunzioni){

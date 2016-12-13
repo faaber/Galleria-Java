@@ -83,12 +83,14 @@ public class MainController implements Initializable {
     private MyRadioButtonsWrapper myRbuttons;
     private UpdateThread aggiornaInterfaccia;
     protected boolean modifichePendenti;
+    private boolean avviata;
     
     public MainController(){
         myRbuttons=new MyRadioButtonsWrapper();
         permesso=null;
         aggiornaInterfaccia=null;
         modifichePendenti=false;
+        avviata=false;
     }
     /**
      * Initializes the controller class.
@@ -119,16 +121,23 @@ public class MainController implements Initializable {
     }
     
     /**
-     * Da lanciare una sola volta DOPO aver assegnato la "scene" allo "stage" nel "Main"
+     * Finalizza le impostazioni e mostra a video l'interfaccia grafica.
+     * Da lanciare solo una volta assegnato la <code>Scene</code> allo <code>Stage</code>.
+     * <p>Il metodo effettua le sue operazioni solo alla prima chiamata. Ulteriori chiamate
+     * verranno ignorate.
      */
     public void avviaGUI(){
+        if(avviata)
+            return;        
         showLoginBox();
         ((Stage)mainPane.getScene().getWindow()).setOnCloseRequest(ev -> {
             System.exit(0);
         });
         ((Stage)mainPane.getScene().getWindow()).setWidth(MainController.LOGIN_W);
+        ((Stage)mainPane.getScene().getWindow()).setHeight(MainController.LOGIN_H);
         ((Stage)mainPane.getScene().getWindow()).setTitle("Galleria");
         ((Stage)mainPane.getScene().getWindow()).show();
+        avviata=true;
     }
 
     @FXML

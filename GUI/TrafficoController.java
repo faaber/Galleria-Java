@@ -10,8 +10,12 @@ import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloTraffico.Circolazione;
 import controlloTraffico.ControlloTraffico;
+import eccezioni.PAIAttivaException;
+import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -121,15 +125,15 @@ public class TrafficoController implements Initializable {
             circolazioneCustomImpostata();
     }
     protected void adottaNuoveImpostazioni(){
+        
         //ControlloTraffico.getInstance().setCircolazione(circolazione);
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_CIRCOLAZIONE, circolazione);
+        richiediFunzioneSafely(Funzione.SET_CIRCOLAZIONE, circolazione);
         //ControlloTraffico.getInstance().setDurataRossoAggiuntiva((int) sliderDurataRossoAggiuntiva.getValue());
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_DURATA_R_AGG, (int) sliderDurataRossoAggiuntiva.getValue());
-
+        richiediFunzioneSafely(Funzione.SET_DURATA_R_AGG, (int) sliderDurataRossoAggiuntiva.getValue());
         //ControlloTraffico.getInstance().setDurataVerdeDXRossoSX((int) sliderDurataVerdeDX.getValue());
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_DURATA_V_DX, (int) sliderDurataVerdeDX.getValue());
+        richiediFunzioneSafely(Funzione.SET_DURATA_V_DX, (int) sliderDurataVerdeDX.getValue());
         //ControlloTraffico.getInstance().setDurataVerdeSXRossoDX((int) sliderDurataVerdeSX.getValue());
-        ControlloAccesso.getInstance().richiediFunzione(Funzione.SET_DURATA_V_SX, (int) sliderDurataVerdeSX.getValue());
+        richiediFunzioneSafely(Funzione.SET_DURATA_V_SX, (int) sliderDurataVerdeSX.getValue());
         
         //Lazy trigger per essere certi di mantenere coerenza tra control e gui
         recuperaImpostazioniInUso();
@@ -154,4 +158,13 @@ public class TrafficoController implements Initializable {
         }
     }
     
+    private boolean richiediFunzioneSafely(Funzione pF, Object a){
+        try {
+            ControlloAccesso.getInstance().richiediFunzione(pF, a);
+        } catch (PermessoInsufficienteException | PAIAttivaException ex) {
+            Logger.getLogger(TrafficoController.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
 }
