@@ -6,8 +6,7 @@ import controlloIlluminazione.Criterio;
 import controlloTraffico.ControlloTraffico;
 import controlloPAI.ControlloPAI;
 import controlloTraffico.Circolazione;
-import eccezioni.PAIAttivaException;
-import eccezioni.PermessoInsufficienteException;
+import eccezioni.FunzioneNonDisponibileException;
 
 public class ControlloAccesso {
     
@@ -72,10 +71,10 @@ public class ControlloAccesso {
         return utenteLoggato;
     }
        
-    public void richiediFunzione(Funzione pFunzione, Object parametro) throws PermessoInsufficienteException, PAIAttivaException{
-        
+    public void richiediFunzione(Funzione pFunzione, Object parametro) throws FunzioneNonDisponibileException{
+        boolean permessoInsufficiente=false, paiInCorso=false;
         if(permesso==null || !permesso.supporta(pFunzione))
-            throw new PermessoInsufficienteException();
+            permessoInsufficiente=true;
         if(ControlloPAI.getInstance().isPAIAttiva()==true){
             if(permesso==Permesso.OPERATORE){
                 if(pFunzione==Funzione.DISATTIVA_PAI){
@@ -83,11 +82,13 @@ public class ControlloAccesso {
                     return;
                 }
                 else
-                    throw new PAIAttivaException();
+                    paiInCorso=true;
             }
             else
-                throw new PAIAttivaException();        
-        }       
+                paiInCorso=true;        
+        }
+        if(permessoInsufficiente || paiInCorso)
+            throw new FunzioneNonDisponibileException(permessoInsufficiente, paiInCorso);
                 
         switch(pFunzione){
             case SET_LIVELLO_CM:

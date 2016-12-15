@@ -22,6 +22,7 @@ public final class IR {
     
     /**
      * Metodo che implementa il design pattern Singleton
+     * @return L'istanza della classe.
      */
     public static IR getInstance() {
         if (instance == null) {

@@ -6,17 +6,11 @@
 package GUI;
 
 import GUI.tools.MyRadioButtonsWrapper;
-import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloIlluminazione.ControlloIlluminazione;
 import controlloIlluminazione.Criterio;
-import eccezioni.PAIAttivaException;
-import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,12 +24,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import main.Main;
 
-/**
- * FXML Controller class
- *
- * @author Lorenzo
- */
-public class IlluminazioneController extends SettoreController implements Initializable {
+
+public class IlluminazioneController extends SettoreController{
 
     @FXML
     private VBox containerIlluminazione;                                        //Trattato come Node
@@ -64,11 +54,10 @@ public class IlluminazioneController extends SettoreController implements Initia
         myRbuttons=new MyRadioButtonsWrapper();
     }
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        paneSettore=containerIlluminazione;
+
         sliderLivelloCM.setMax(ControlloIlluminazione.INTENSITA_MAX);
         sliderLivelloCM.setMin(ControlloIlluminazione.INTENSITA_MIN);
         
@@ -90,6 +79,10 @@ public class IlluminazioneController extends SettoreController implements Initia
         
     }
 
+    /**
+     * Registra un cambio al tipo di <code>Criterio</code> d'illuminazione richiesto dall'utente.
+     * @param event L'evento che genera questo cambiamento.
+     */
     @FXML
     private void cambiaCriterio(ActionEvent event) {
         criterio=(Criterio)myRbuttons.getEnum((RadioButton)event.getSource());
@@ -134,10 +127,4 @@ public class IlluminazioneController extends SettoreController implements Initia
         //Lazy trigger per essere certi di mantenere coerenza tra control e gui
         recuperaImpostazioniInUso();
     }
-    @Override
-    protected void disabilitaVista(boolean val){
-        containerIlluminazione.disableProperty().set(val);
-    }
-    
-    
 }

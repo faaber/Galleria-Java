@@ -42,6 +42,7 @@ public final class ControlloTraffico {
     
     /**
      * Metodo che implementa il design pattern Singleton
+     * @return L'istanza della classe.
      */
     public static ControlloTraffico getInstance() {
         if (instance == null) {

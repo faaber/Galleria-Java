@@ -20,7 +20,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -39,7 +38,6 @@ public class Main extends Application {
         stage=primaryStage;
         System.out.print("Inizializzazione interfaccia grafica... ");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/MainView.fxml"));
-        Font.loadFont(getClass().getResourceAsStream("/GUI/resources/fontawesome-webfont.ttf"), 14);
 
         Parent root = loader.load(getClass().getResource("/GUI/MainView.fxml"));
         controlloGUI = (MainController)loader.getController();
@@ -66,7 +64,7 @@ public class Main extends Application {
         Thread th = new Thread(LogicTask.getInstance());
         th.setDaemon(true);
         th.start();
-        
+
         System.out.println("Fine!"); 
         launch(args);
     }

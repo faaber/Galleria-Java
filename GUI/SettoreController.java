@@ -7,23 +7,24 @@ package GUI;
 
 import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloIlluminazione.Criterio;
-import eccezioni.PAIAttivaException;
-import eccezioni.PermessoInsufficienteException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import eccezioni.FunzioneNonDisponibileException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.Pane;
 
 /**
- *
- * @author Lorenzo
+ * Classe astratta che mette a fattor comune la strategia di implementazione e la
+ * gestione dei controller grafici. Trovandoci in ambiente JavaFX, implementa Initializable.
  */
-public abstract class SettoreController{
-    
-    
+public abstract class SettoreController implements Initializable{
+    /**
+     * Il contenitore grafico principale del settore in questione.
+     * Il settore effettivo che estenderà questa classe dovrà assicurarsi di assegnargli, nell'atto
+     * dell'inizializzazione, il contenitore principale.
+     * @see Initializable#initialize(java.net.URL, java.util.ResourceBundle) .
+     */
+    protected Pane paneSettore;
 
     /**
      * Instaura un'associazione tra una serie RadioButton appartenenti all'interfaccia
@@ -45,23 +46,25 @@ public abstract class SettoreController{
 
     /**
      * Abilita o disabilita gli input dell'utente su tale settore dell'interfaccia.
-     * @param val 
+     * @param val <code>True/False</code> se va disabilitato/abilitato.
      */
-    abstract void disabilitaVista(boolean val) ;
+    protected void disabilitaVista(boolean val){
+        paneSettore.disableProperty().set(val);
+    }
 
     /**
      * Consente di richiamare il metodo richiediFunzione di ControlloAccesso catturando
      * automaticamente le eccezioni.
      * @param pF La Funzione che si vuole richiedere
      * @param pO Parametro da passare alla funzione
-     * @return <code>true</code> se non sono state catturate eccezioni, <code>false</code> altrimenti.
+     * @return <code>true</code> se la chiamata è andata a buon fine e dunque non sono state catturate eccezioni, <code>false</code> altrimenti.
      * @see ControlloAccesso#richiediFunzione(controlloAccesso.Funzione, java.lang.Object) 
      */
     protected boolean richiediFunzioneSafely(Funzione pF, Object pO) {
         try {
             ControlloAccesso.getInstance().richiediFunzione(pF, pO);
-        } catch (PermessoInsufficienteException | PAIAttivaException ex) {
-            Logger.getLogger(TrafficoController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FunzioneNonDisponibileException ex) {
+            Logger.getLogger(SettoreController.class.getName()).log(Level.WARNING, "Funzione -> "+pF, ex);
             return false;
         }
         return true;

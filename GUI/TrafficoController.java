@@ -6,21 +6,13 @@
 package GUI;
 
 import GUI.tools.MyRadioButtonsWrapper;
-import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloTraffico.Circolazione;
 import controlloTraffico.ControlloTraffico;
-import eccezioni.PAIAttivaException;
-import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -28,15 +20,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import main.Main;
 
-/**
- * FXML Controller class
- *
- * @author Lorenzo
- */
-public class TrafficoController implements Initializable {
 
-
-
+public class TrafficoController extends SettoreController{
     //Elementi di supporto non grafici
     private Circolazione circolazione;
     private MyRadioButtonsWrapper myRbuttons;
@@ -72,11 +57,9 @@ public class TrafficoController implements Initializable {
         myRbuttons=new MyRadioButtonsWrapper();
     }
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        paneSettore=containerTraffico;
         // Vincoli sugli input dell'utente
         sliderDurataVerdeDX.setMax(controlloTraffico.ControlloTraffico.DURATA_MAX);
         sliderDurataVerdeDX.setMin(controlloTraffico.ControlloTraffico.DURATA_MIN);
@@ -106,7 +89,9 @@ public class TrafficoController implements Initializable {
         
         Main.GUIcontrollers.putInstance(TrafficoController.class, this);      
     }
-    private void associaPulsantiAdEnum(){
+    
+    @Override
+    void associaPulsantiAdEnum(){
         myRbuttons.add(rButtonCircInterd, Circolazione.INTERDETTA);
         myRbuttons.add(rButtonCircSUA, Circolazione.SENSO_UNICO_ALTER);
         myRbuttons.add(rButtonCircSUDX, Circolazione.SENSO_UNICO_DX);
@@ -114,6 +99,7 @@ public class TrafficoController implements Initializable {
         myRbuttons.add(rButtonCircolazioneDS, Circolazione.DOPPIO_SENSO);
     }
     
+    @Override
     protected void recuperaImpostazioniInUso(){
         sliderDurataRossoAggiuntiva.valueProperty().set(ControlloTraffico.getInstance().getDurataRossoAggiuntiva());
         sliderDurataVerdeDX.valueProperty().set(ControlloTraffico.getInstance().getDurataVerdeDXRossoSX());
@@ -124,6 +110,7 @@ public class TrafficoController implements Initializable {
         else
             circolazioneCustomImpostata();
     }
+    @Override
     protected void adottaNuoveImpostazioni(){
         
         //ControlloTraffico.getInstance().setCircolazione(circolazione);
@@ -138,12 +125,11 @@ public class TrafficoController implements Initializable {
         //Lazy trigger per essere certi di mantenere coerenza tra control e gui
         recuperaImpostazioniInUso();
     }
-    
-    
-    protected void disabilitaVista(boolean val){
-        containerTraffico.disableProperty().set(val);
-    }
 
+    /**
+     * Registra un cambio al tipo di <code>Circolazione</code> richiesta dall'utente.
+     * @param event L'evento che genera questo cambiamento.
+     */
     @FXML
     private void cambiaCircolazione(ActionEvent event) {
         circolazione=(Circolazione)myRbuttons.getEnum((RadioButton)event.getSource());
@@ -151,20 +137,16 @@ public class TrafficoController implements Initializable {
         System.out.println("Richiedi circolazione: "+circolazione);
     }
     
+    /**
+     * Notifica l'attivazione della <code>Circolazione.CUSTOM</code> da parte di un'altra classe.
+     * Tale metodo è necessario, poiché <code>TrafficoController</code> non consente la gestione di
+     * questa modalità di <code>Circolazione</code> essendo un dettaglio legato alla manutenzione tecnica del sistema.
+     * @see ManutenzioneController
+     */
     protected void circolazioneCustomImpostata(){
         if(circolazione!=Circolazione.CUSTOM){
             myRbuttons.getButton(circolazione).setSelected(false);
             circolazione=Circolazione.CUSTOM;
         }
-    }
-    
-    private boolean richiediFunzioneSafely(Funzione pF, Object a){
-        try {
-            ControlloAccesso.getInstance().richiediFunzione(pF, a);
-        } catch (PermessoInsufficienteException | PAIAttivaException ex) {
-            Logger.getLogger(TrafficoController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
     }
 }

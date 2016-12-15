@@ -2,11 +2,8 @@ package controlloAccesso;
 
 /**
  * Quest'enumerazione codifica il livello di permesso degli utenti registrati.
- * <code>controllore</code> puo' solo visualizzare informazioni, non può effettuare
- * modifiche
- * <code>operatore</code> puo' visualizzare e modificare
- * <
- * @author Alessandro
+ * <code>Permesso.CONTROLLORE</code> può solo visualizzare informazioni ma non può effettuare modifiche.
+ * <code>Permesso.OPERATORE</code> può sia visualizzare che modificare le informazioni.
  */
 public enum Permesso {
     CONTROLLORE(),

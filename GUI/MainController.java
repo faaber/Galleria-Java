@@ -33,11 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Main;
 
-/**
- * FXML Controller class
- *
- * @author Lorenzo
- */
+
 public class MainController implements Initializable {
     //Costanti
     public static final int LOGIN_W=320, LOGIN_H=320, APP_W=800, APP_H=600;
@@ -92,9 +88,7 @@ public class MainController implements Initializable {
         modifichePendenti=false;
         avviata=false;
     }
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Vincoli dell'utente
@@ -140,22 +134,43 @@ public class MainController implements Initializable {
         avviata=true;
     }
 
+    
+    /**
+     * Conferma le impostazioni richieste dall'utente nei vari settori della GUI spingendole nella logica applicativa.
+     * @param event L'evento che genera questa richiesta.
+     */
     @FXML
     private void accettaModifiche(ActionEvent event) {
         ((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).adottaNuoveImpostazioni();
-        ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).adottaNuoveImpostazioni();
-        ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).adottaNuoveImpostazioni();
         
+        /*
+        Questo controllo evita che si cerchi di aggiornare inutilmente gli altri controller logici quando 
+        non è stato possibile disattivare un'eventuale PAI. La sua rimozione NON implica malfunzionamenti
+        ma lasciandolo si evita di sporcare inutilmente la console. Può essere rimosso all'occorrenza
+        per mostrare l'utilità di ControlloAccesso.richiediFunzione.
+        */
+        if(!((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorso()){
+            ((TrafficoController)Main.GUIcontrollers.getInstance(TrafficoController.class)).adottaNuoveImpostazioni();
+            ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).adottaNuoveImpostazioni();
+        }
         contestualizzaInterfaccia();
         disabilitaPulsantiModifiche(true);
     }
 
+    /**
+     * Annulla le impostazioni richieste dall'utente nei vari settori della GUI reperendole dalla logica applicativa.
+     * @param event L'evento che genera questa richiesta.
+     */
     @FXML
     private void annullaModifiche(ActionEvent event) {
         recuperaValoriInUso();    
         disabilitaPulsantiModifiche(true);
     }
 
+    /**
+     * Disconnette l'utente corrente dal sistema, ripresentando la schermata di login.
+     * @param event L'evento che genera questa richiesta.
+     */
     @FXML
     private void effettuaLogout(ActionEvent event) {        
         ControlloAccesso.getInstance().effettuaLogout();
@@ -165,6 +180,10 @@ public class MainController implements Initializable {
         showLoginBox();
     }
 
+    /**
+     * Richiede al sistema di autenticare l'utente, presentando in caso di successo l'interfaccia principale.
+     * @param event L'evento che genera questa richiesta.
+     */
     @FXML
     private void effettuaLogin(ActionEvent event) {
         if(ControlloAccesso.getInstance().effettuaLogin(fieldUsername.textProperty().get(), fieldPassword.textProperty().get()) == null){
@@ -184,6 +203,10 @@ public class MainController implements Initializable {
     }
     
     /**************************************************************************/
+    
+    /**
+     * Mostra la finestra di login, nascondendo tutte le altre.
+     */
     private void showLoginBox(){
         if(aggiornaInterfaccia!=null)
             aggiornaInterfaccia.terminate();
@@ -195,15 +218,23 @@ public class MainController implements Initializable {
         ((Stage)mainPane.getScene().getWindow()).setHeight(LOGIN_H);
         ((Stage)mainPane.getScene().getWindow()).setResizable(false);
     }
+    
+    /**
+     * Mostra la vista principale dell'applicazione, nascondendo tutte le altre.
+     */
     private void showAppBox(){
         boxLogin.toBack();
         boxApplicazione.toFront();
         ((Stage)mainPane.getScene().getWindow()).setWidth(APP_W);
         ((Stage)mainPane.getScene().getWindow()).setHeight(APP_H);
         ((Stage)mainPane.getScene().getWindow()).setResizable(true);
-        aggiornaInterfaccia=new UpdateThread(60D);
+        aggiornaInterfaccia=new UpdateThread(60D, false);
         aggiornaInterfaccia.start();  
     }
+    
+    /**
+     * Apre la finestra contenente la vista di manutenzione, nel caso in cui non lo sia già.
+     */
     @FXML
     private void showMaintenanceWindow(){
         stageManutenzione.show();
@@ -215,6 +246,12 @@ public class MainController implements Initializable {
         */
     }
     
+    /**
+     * Abilita o disabilita i pulsanti che consentono di accettare/annullare le modifiche effettuate al sistema.
+     * @param b <code>True</code> se i pulsanti vanno disabilitati, <code>false</code> altrimenti.
+     * @see MainController#accettaModifiche(javafx.event.ActionEvent)
+     * @see MainController#annullaModifiche(javafx.event.ActionEvent)
+     */
     protected void disabilitaPulsantiModifiche(boolean b){
         if(b==true)
             modifichePendenti=false;
@@ -232,7 +269,7 @@ public class MainController implements Initializable {
     }    
     
     /**
-     * Viene richiamata per consentire le funzionalità in base al tipo di accesso effettuato e allo stato della PAI
+     * Rende disponibili a video solo le interazioni consentite dal <code>Permesso</code> dell'user autenticato e dallo stato della PAI.
      */
     private void contestualizzaInterfaccia(){
         buttonManutenzione.setDisable(false);
@@ -266,42 +303,59 @@ public class MainController implements Initializable {
         
         private boolean stopRequested;
         private double freq;
+        private boolean high_perf;
         
-        public UpdateThread(double freq) {
+        public UpdateThread(double freq, boolean pHigh_perf) {
             super();
-            stopRequested=false;
+            this.stopRequested=false;
             this.freq=freq;
+            this.high_perf=pHigh_perf;
         }
             
         
         @Override
         public void run() {
             Runnable operation=()->{recuperaValoriInUso();};
-            long lastTime=System.nanoTime(), now;
-            double nsOp1=1000000000/freq;                                     //16666666.6667 ns sono 16ms, l'intervallo di tempo che deve esserci tra un update e l'altro per per averne 60 al secondo
-            double nsOp2=1000000000/(freq/3);
-            double deltaOp1=0, deltaOp2=0;
-            
-            while(!stopRequested){
-                now=System.nanoTime();
-                deltaOp1+=(now-lastTime)/nsOp1;                                           //delta=tempo trascorso rispetto ai 16 ms (60 game update al secondo)
-                deltaOp2+=(now-lastTime)/nsOp2;
-                lastTime=now;
-                if(deltaOp1>=1){
-                    // Aggiornamento grafico e Pulsanti modifica
-                    ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).aggiornaCurva();
-                    if(modifichePendenti)
-                        disabilitaPulsantiModifiche(false);
-                    deltaOp1--;
+            if(high_perf){
+                long lastTime=System.nanoTime(), now;
+                double nsOp1=1000000000/freq;                                     //16666666.6667 ns sono 16ms, l'intervallo di tempo che deve esserci tra un update e l'altro per per averne 60 al secondo
+                double nsOp2=1000000000/(freq/3);
+                double deltaOp1=0, deltaOp2=0;
+
+                while(!stopRequested){
+                    now=System.nanoTime();
+                    deltaOp1+=(now-lastTime)/nsOp1;                                           //delta=tempo trascorso rispetto ai 16 ms (60 game update al secondo)
+                    deltaOp2+=(now-lastTime)/nsOp2;
+                    lastTime=now;
+                    if(deltaOp1>=1){
+                        // Aggiornamento grafico e Pulsanti modifica
+                        ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).aggiornaCurva();
+                        if(modifichePendenti)
+                            disabilitaPulsantiModifiche(false);
+                        deltaOp1--;
+                    }
+                    if(deltaOp2>=1){
+                        if(((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorsoIncoherent())
+                                Platform.runLater(operation);
+                        deltaOp2--;
+                    }
                 }
-                if(deltaOp2>=1){
-                    if(((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorsoIncoherent())
+            }else{
+                while(!stopRequested){
+                    long time=(long) (1000/freq);
+                    try {
+                        ((IlluminazioneController)Main.GUIcontrollers.getInstance(IlluminazioneController.class)).aggiornaCurva();
+                        if(modifichePendenti)
+                            disabilitaPulsantiModifiche(false);
+                        if(((PAIController)Main.GUIcontrollers.getInstance(PAIController.class)).isPaiInCorsoIncoherent())
                             Platform.runLater(operation);
-                    deltaOp2--;
+                        Thread.sleep(time);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
-        }
-        
+        }        
         public void terminate(){
             stopRequested=true;
             this.interrupt();

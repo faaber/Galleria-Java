@@ -5,17 +5,10 @@
  */
 package GUI;
 
-import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Funzione;
 import controlloPAI.ControlloPAI;
-import static java.lang.Thread.sleep;
-import eccezioni.PAIAttivaException;
-import eccezioni.PermessoInsufficienteException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,12 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import main.Main;
 
-/**
- * FXML Controller class
- *
- * @author Lorenzo
- */
-public class PAIController implements Initializable {
+
+public class PAIController extends SettoreController{
 
     @FXML
     private VBox containerPAI;
@@ -41,15 +30,18 @@ public class PAIController implements Initializable {
 
     //Elementi di supporto non grafici
     private boolean paiInCorso;
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         recuperaImpostazioniInUso();
         Main.GUIcontrollers.putInstance(PAIController.class, this);
+        paneSettore=containerPAI;
     }    
 
+    /**
+     * Registra un cambio allo stato della PAI come richiesto dall'utente.
+     * @param event L'evento che genera questo cambiamento.
+     */
     @FXML
     private void disattivaPAI(ActionEvent event) {
         if(buttonDisattivaPAI.isSelected()){
@@ -64,6 +56,7 @@ public class PAIController implements Initializable {
     
     /**************************************************************************/
     
+    @Override
     protected void adottaNuoveImpostazioni(){
         if(buttonDisattivaPAI.isSelected()){
             buttonDisattivaPAI.setSelected(false);
@@ -75,6 +68,7 @@ public class PAIController implements Initializable {
         }
     }
     
+    @Override
     protected void recuperaImpostazioniInUso(){
         buttonDisattivaPAI.selectedProperty().set(false);
         paiInCorso=ControlloPAI.getInstance().isPAIAttiva();
@@ -90,14 +84,20 @@ public class PAIController implements Initializable {
         }
     }
     
-    protected void disabilitaVista(boolean val){
-        containerPAI.disableProperty().set(val);
-    }
-    
+    /**
+     * Restituisce lo stato della PAI come vista dall'utente.
+     * @return <code>True/false</code> se è attiva/disattiva.
+     */
     protected boolean isPaiInCorso(){
         return paiInCorso;
     }
     
+    /**
+     * Rivela un'eventuale incoerenza tra lo stato della PAI come vista (dunque eventualmente richiesta)
+     * dall'utente e il suo stato effettivo contenuto nella logica applicativa. Questo risultato è necessario
+     * ai fini della corretta gestione della GUI da parte del controllo grafico principale.
+     * @return <code>True/false</code> se c'è/non c'è incoerenza.
+     */
     protected boolean isPaiInCorsoIncoherent(){
         if(ControlloPAI.getInstance().isPAIAttiva() && paiInCorso==false && !buttonDisattivaPAI.isSelected())
             return true;
@@ -105,13 +105,9 @@ public class PAIController implements Initializable {
             return false;
     }  
 
-    private boolean richiediFunzioneSafely(Funzione pF, Object a){
-        try {
-            ControlloAccesso.getInstance().richiediFunzione(pF, a);
-        } catch (PermessoInsufficienteException | PAIAttivaException ex) {
-            Logger.getLogger(TrafficoController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
+    @Override
+    void associaPulsantiAdEnum() {
+        return;
     }
+
 }

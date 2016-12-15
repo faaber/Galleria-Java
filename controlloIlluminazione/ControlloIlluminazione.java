@@ -52,6 +52,7 @@ public final class ControlloIlluminazione {
     
     /**
      * Metodo che implementa il desing pattern Singleton
+     * @return L'instanza della classe.
      */
     public static ControlloIlluminazione getInstance() {
         if (instance == null) {

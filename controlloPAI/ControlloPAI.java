@@ -65,6 +65,7 @@ public final class ControlloPAI {
     
     /**
      * Metodo che implementa il design pattern Singleton
+     * @return L'istanza della classe.
      */
     public static ControlloPAI getInstance() {
         if (instance == null) {
@@ -104,8 +105,9 @@ public final class ControlloPAI {
      * Attiva la procedura antincendio. Imposta il criterio d'illuminazione
      * a costante, la circolazione a interdetto e registra l'attivazione
      * della PAI nel database
+     * @return Se è stato possibile attivare la PAI.
      */
-    public void attivaPAI() {
+    public boolean attivaPAI() {
         if (!PAIAttiva) {
             PAIAttiva = true;
 
@@ -114,19 +116,27 @@ public final class ControlloPAI {
             ControlloTraffico.getInstance().setCircolazione(Circolazione.INTERDETTA);
             
             DDI.getInstance().writeAttivazionePAI();
+            
+            return true;
         }
+        return false;
     }
     
     /**
      * Disattiva la procedura antincendio. Ripristina il funzionamento ordinario
-     * della galleria, registrando la disattivazione della PAI nel database
+     * della galleria, registrando la disattivazione della PAI nel database.
+     * 
+     * @return Se è stato possibile disattivare la PAI.
      */
-    public void disattivaPAI() {
+    public boolean disattivaPAI() {
         if (PAIAttiva && !temperaturaAlta) {
             PAIAttiva = false;
 
             DDI.getInstance().writeDisattivazionePAI(ControlloAccesso.getInstance().getUtenteLoggato());
+            
+            return true;
         }
+        return false;
     }
 
     public boolean isPAIAttiva() {
