@@ -1,6 +1,5 @@
 package DDI;
 
-import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Permesso;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +14,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe che implementa e gestisce la comunicazione con il DB.
+ * Implementa il design pattern Singleton.
+ */
 public class DDI {
 
     private static Properties ProprietàDB;
@@ -22,6 +25,11 @@ public class DDI {
 
     private static DDI instance = null;
 
+    /**
+     * Metodo che implementa il design pattern Singleton.
+     * @return L'istanza della classe o null se non è stato possibile istaurare
+     * una connessione con il DB.
+     */
     public static DDI getInstance() {
         if (instance == null) {
             try {
@@ -38,7 +46,9 @@ public class DDI {
     }
 
     /**
-     * Costruttore
+     * Costruttore della classe. Può non fallire sotto determinate condizioni.
+     * @throws ClassNotFoundException Quando vi sono stati errori con il caricamento del driver.
+     * @throws SQLException Quando vi sono stati errori con l'istaurazione della connesione col DB.
      */
     private DDI() throws ClassNotFoundException, SQLException {
         RilasciaConnessioni = new ArrayList<Connection>();
@@ -58,6 +68,9 @@ public class DDI {
         }
     }
 
+    /**
+     * Carica delle credenziali di default per l'accesso al DB.
+     */
     private static void CaricaCredenzialiDefault() {
         ProprietàDB.setProperty("driver", "org.gjt.mm.mysql.Driver");
         ProprietàDB.setProperty("url", "jdbc:mysql://localhost/galleria");
@@ -65,6 +78,11 @@ public class DDI {
         ProprietàDB.setProperty("password", "1234");
     }
 
+    /**
+     * Consente di ottenere una connessione al db per effettuare delle operazioni.
+     * @return Un'istanza di connesione.
+     * @throws SQLException In caso di errori nell'apertura della connessione.
+     */
     private static synchronized Connection getConnection() throws SQLException {
         Connection connessione;
 
@@ -88,11 +106,20 @@ public class DDI {
         return connessione;
     }
 
+    /**
+     * Consente di rilasciare una connessione dopo l'uso.
+     * @param rilasciaconnessione La connessione d'interesse.
+     */
     private static synchronized void RilasciaConnessione(Connection rilasciaconnessione) {
 
         RilasciaConnessioni.add(rilasciaconnessione);
     }
 
+    /**
+     * Apre una connessione con il DB
+     * @return La connessione aperta.
+     * @throws SQLException In caso di errori nella connessione.
+     */
     private static Connection ApriConnessione() throws SQLException {
         Connection nuovaconnessione = null;
 
@@ -105,12 +132,21 @@ public class DDI {
         return nuovaconnessione;
     }
 
+    /**
+     * Prova a caricare il driver.
+     * @throws ClassNotFoundException Quando ci sono stati errori nel caricare il driver.
+     */
     private static void CaricaDriver() throws ClassNotFoundException {
         if(ProprietàDB.getProperty("driver")==null)
             throw new ClassNotFoundException();
         Class.forName(ProprietàDB.getProperty("driver"));
     }
 
+    /**
+     * Carica le credenziali per l'accesso al DB.
+     * Prova prima a trovarle sul file, se non riesce chiama il metodo che carica quelle di default.
+     * @throws IOException In caso di problemi con il caricamento.
+     */
     private static void CaricaCredenziali() throws IOException {
         ProprietàDB = new Properties();
         try {

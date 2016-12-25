@@ -25,6 +25,9 @@ public class MyRadioButtonsWrapper {
     
     private LinkedList<MyRadioButtonWrapper> myRbuttons;
 
+    /**
+     * Costruttore.
+     */
     public MyRadioButtonsWrapper() {
         myRbuttons=new LinkedList<>();
     }

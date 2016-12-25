@@ -321,6 +321,10 @@ public class ManutenzioneController implements Initializable {
         }
     }
     
+    /**
+     * Abilita o disabilita gli input dell'utente su tale settore dell'interfaccia.
+     * @param val <code>True/False</code> se va disabilitato/abilitato.
+     */
     public void disabilitaVista(boolean val){
         manutenzionePane.setDisable(val);
     }

@@ -55,6 +55,9 @@ public class TrafficoController extends SettoreController{
     @FXML
     private Slider sliderDurataRossoAggiuntiva;
     
+    /**
+     * Costruttore.
+     */
     public TrafficoController(){
         myRbuttons=new MyRadioButtonsWrapper();
     }

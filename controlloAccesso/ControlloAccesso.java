@@ -70,7 +70,15 @@ public class ControlloAccesso {
     public String getUtenteLoggato(){
         return utenteLoggato;
     }
-       
+    
+    /**
+     * Consente di richiedere le funzioni al sistema da parte di uno specifico utente.
+     * Le informazioni sull'utente vengono reperite automaticamente.
+     * @param pFunzione La funzione richiesta dall'utente.
+     * @param parametro I parametri della funzione.
+     * @throws FunzioneNonDisponibileException Quando la richiesta viene negata a causa di un motivo generico,
+     * per mancanza di un permesso sufficiente o per lo stato della PAI.
+     */
     public void richiediFunzione(Funzione pFunzione, Object parametro) throws FunzioneNonDisponibileException{
         boolean permessoInsufficiente=false, paiInCorso=false;
         if(permesso==null || !permesso.supporta(pFunzione))
