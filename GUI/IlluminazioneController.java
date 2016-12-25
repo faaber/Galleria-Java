@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
@@ -24,7 +23,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import main.Main;
 
-
+/**
+ * Settore della GUI che si occupa della tab Illuminazione.
+ */
 public class IlluminazioneController extends SettoreController{
 
     @FXML

@@ -23,16 +23,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Lorenzo
+ * Entry point dell'applicazione.
  */
 public class Main extends Application {
     
-    public static final ClassToInstanceMap  GUIcontrollers = MutableClassToInstanceMap.create();
+    public static final ClassToInstanceMap GUIcontrollers = MutableClassToInstanceMap.create();
     public static Stage stage;
     
     static public MainController controlloGUI;
             
+    /**
+     * Inizializzazione dell'interfaccia grafica e visualizzazione.
+     * @param primaryStage
+     * @throws IOException 
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage=primaryStage;
@@ -49,6 +53,8 @@ public class Main extends Application {
 
     
     /**
+     * Inizializzazione della logica applicativa e avvio dell'istanziazione dell'interfaccia grafica.
+     * L'esecuzione viene terminata in caso di errori in questa fase.
      * @param args the command line arguments
      */
     public static void main(String[] args) {

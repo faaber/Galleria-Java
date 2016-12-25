@@ -16,6 +16,11 @@ public enum Permesso {
         Funzione.SET_LIVELLO_CM,
         Funzione.SET_CRITERIO);
     
+    /**
+     * Verifica se una data Funzione è supportata dal Permesso in questione.
+     * @param funzione
+     * @return <code>True/false</code> in base al fatto che la funzione sia supportata o meno.
+     */
     public boolean supporta(Funzione funzione){
         for (Funzione funzioni1 : funzioni) {
             if (funzione == funzioni1) {
@@ -25,6 +30,10 @@ public enum Permesso {
         return false;
     }
     
+    /**
+     * Ottieni tutte le Funzioni supportate dal Permesso.
+     * @return Il vettore delle funzioni supportate
+     */
     public Funzione[] getFunzioni(){
         return funzioni.clone();
     }

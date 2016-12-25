@@ -11,14 +11,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import main.Main;
 
-
+/**
+ * Settore della GUI che si occupa della tab PAI.
+ */
 public class PAIController extends SettoreController{
 
     @FXML

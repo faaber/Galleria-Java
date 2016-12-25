@@ -7,7 +7,6 @@ import controlloPAI.ControlloPAI;
 import controlloTraffico.Circolazione;
 import controlloTraffico.ControlloTraffico;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +23,7 @@ import javafx.scene.shape.Rectangle;
 import main.Main;
 
 /**
- * FXML Controller class
+ * Settore della GUI che si occupa della vista di manutenzione.
  */
 public class ManutenzioneController implements Initializable {
 

@@ -1,7 +1,7 @@
 package controlloTraffico;
 
 /**
- * Enumerazione che specifica l'informazione dello stato della circolazione
+ * Quest'enumerazione codifica i tipi di circolazione supportati dal sistema.
  */
 public enum Circolazione {
     DOPPIO_SENSO,

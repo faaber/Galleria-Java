@@ -10,7 +10,6 @@ import controlloAccesso.ControlloAccesso;
 import controlloAccesso.Permesso;
 import java.io.IOException;
 
-import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -33,7 +32,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Main;
 
-
+/**
+ * Gestore principale della GUI che si occupa della vista principale e della finestra di login.
+ */
 public class MainController implements Initializable {
     //Costanti
     public static final int LOGIN_W=320, LOGIN_H=320, APP_W=800, APP_H=600;

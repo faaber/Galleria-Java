@@ -20,7 +20,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import main.Main;
 
-
+/**
+ * Settore della GUI che si occupa della tab Traffico.
+ */
 public class TrafficoController extends SettoreController{
     //Elementi di supporto non grafici
     private Circolazione circolazione;
