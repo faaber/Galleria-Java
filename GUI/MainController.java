@@ -27,6 +27,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,7 +38,7 @@ import main.Main;
  */
 public class MainController implements Initializable {
     //Costanti
-    public static final int LOGIN_W=320, LOGIN_H=320, APP_W=800, APP_H=600;
+    public static final int LOGIN_W=320, LOGIN_H=320, APP_W=800, APP_H=600, MANT_W=525, MANT_H=480;
     
     @FXML
     private StackPane mainPane;                                                 // Trattato come Pane
@@ -110,6 +111,11 @@ public class MainController implements Initializable {
             stageManutenzione = new Stage();
             stageManutenzione.setScene(new Scene(root));
             stageManutenzione.setResizable(false);
+            stageManutenzione.getScene().getWindow().setWidth(MANT_W);
+            stageManutenzione.getScene().getWindow().setHeight(MANT_H);
+            stageManutenzione.setTitle("Manutenzione");
+            stageManutenzione.getIcons().add(new Image("/GUI/resources/icon+wrench.png"));
+
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -131,6 +137,7 @@ public class MainController implements Initializable {
         ((Stage)mainPane.getScene().getWindow()).setWidth(MainController.LOGIN_W);
         ((Stage)mainPane.getScene().getWindow()).setHeight(MainController.LOGIN_H);
         ((Stage)mainPane.getScene().getWindow()).setTitle("Galleria");
+        ((Stage)mainPane.getScene().getWindow()).getIcons().add(new Image("/GUI/resources/icon.png"));
         ((Stage)mainPane.getScene().getWindow()).show();
         avviata=true;
     }
