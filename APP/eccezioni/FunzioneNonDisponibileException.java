@@ -1,4 +1,4 @@
-package eccezioni;
+package APP.eccezioni;
 
 /**
  * Modella l'impossibilità ad eseguire una data funzionalità del sistema su richiesta dell'utente.

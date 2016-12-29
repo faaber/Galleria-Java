@@ -1,6 +1,6 @@
-package controlloTraffico;
+package APP.controlloTraffico;
 
-import arduino.LogicTask;
+import APP.arduino.LogicTask;
 import java.util.Date;
 
 /**

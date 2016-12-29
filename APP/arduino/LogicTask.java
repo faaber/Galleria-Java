@@ -1,9 +1,9 @@
-package arduino;
+package APP.arduino;
 
-import controlloTraffico.ControlloTraffico;
-import controlloTraffico.IR;
-import controlloPAI.ControlloPAI;
-import controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloTraffico.ControlloTraffico;
+import APP.controlloTraffico.IR;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloIlluminazione.ControlloIlluminazione;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;

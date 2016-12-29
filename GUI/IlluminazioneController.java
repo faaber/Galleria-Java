@@ -6,9 +6,9 @@
 package GUI;
 
 import GUI.tools.MyRadioButtonsWrapper;
-import controlloAccesso.Funzione;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloIlluminazione.Criterio;
+import APP.controlloAccesso.Funzione;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloIlluminazione.Criterio;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;

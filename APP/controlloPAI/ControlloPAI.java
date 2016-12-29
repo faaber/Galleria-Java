@@ -1,9 +1,9 @@
-package controlloPAI;
+package APP.controlloPAI;
 
-import controlloAccesso.ControlloAccesso;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloTraffico.Circolazione;
-import controlloTraffico.ControlloTraffico;
+import APP.controlloAccesso.ControlloAccesso;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloTraffico.Circolazione;
+import APP.controlloTraffico.ControlloTraffico;
 import DDI.DDI;
 import java.util.Date;
 

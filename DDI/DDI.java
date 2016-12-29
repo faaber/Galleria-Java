@@ -1,6 +1,6 @@
 package DDI;
 
-import controlloAccesso.Permesso;
+import APP.controlloAccesso.Permesso;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;

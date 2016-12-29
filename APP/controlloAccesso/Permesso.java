@@ -1,4 +1,4 @@
-package controlloAccesso;
+package APP.controlloAccesso;
 
 /**
  * Quest'enumerazione codifica il livello di permesso degli utenti registrati.

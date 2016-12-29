@@ -5,14 +5,14 @@
  */
 package main;
 
-import controlloTraffico.ControlloTraffico;
-import controlloTraffico.IR;
-import controlloPAI.ControlloPAI;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloAccesso.ControlloAccesso;
+import APP.controlloTraffico.ControlloTraffico;
+import APP.controlloTraffico.IR;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloAccesso.ControlloAccesso;
 import DDI.DDI;
 import GUI.MainController;
-import arduino.LogicTask;
+import APP.arduino.LogicTask;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import java.io.IOException;

@@ -5,9 +5,9 @@
  */
 package GUI;
 
-import controlloAccesso.ControlloAccesso;
-import controlloAccesso.Funzione;
-import eccezioni.FunzioneNonDisponibileException;
+import APP.controlloAccesso.ControlloAccesso;
+import APP.controlloAccesso.Funzione;
+import APP.eccezioni.FunzioneNonDisponibileException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.Initializable;

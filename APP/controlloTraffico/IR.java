@@ -1,6 +1,6 @@
-package controlloTraffico;
+package APP.controlloTraffico;
 
-import controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloIlluminazione.ControlloIlluminazione;
 import java.util.Date;
 
 /**

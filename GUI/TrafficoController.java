@@ -6,9 +6,9 @@
 package GUI;
 
 import GUI.tools.MyRadioButtonsWrapper;
-import controlloAccesso.Funzione;
-import controlloTraffico.Circolazione;
-import controlloTraffico.ControlloTraffico;
+import APP.controlloAccesso.Funzione;
+import APP.controlloTraffico.Circolazione;
+import APP.controlloTraffico.ControlloTraffico;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -66,12 +66,12 @@ public class TrafficoController extends SettoreController{
     public void initialize(URL url, ResourceBundle rb) {
         paneSettore=containerTraffico;
         // Vincoli sugli input dell'utente
-        sliderDurataVerdeDX.setMax(controlloTraffico.ControlloTraffico.DURATA_MAX);
-        sliderDurataVerdeDX.setMin(controlloTraffico.ControlloTraffico.DURATA_MIN);
-        sliderDurataVerdeSX.setMax(controlloTraffico.ControlloTraffico.DURATA_MAX);
-        sliderDurataVerdeSX.setMin(controlloTraffico.ControlloTraffico.DURATA_MIN);
-        sliderDurataRossoAggiuntiva.setMax(controlloTraffico.ControlloTraffico.DURATA_MAX);
-        sliderDurataRossoAggiuntiva.setMin(controlloTraffico.ControlloTraffico.DURATA_MIN);
+        sliderDurataVerdeDX.setMax(APP.controlloTraffico.ControlloTraffico.DURATA_MAX);
+        sliderDurataVerdeDX.setMin(APP.controlloTraffico.ControlloTraffico.DURATA_MIN);
+        sliderDurataVerdeSX.setMax(APP.controlloTraffico.ControlloTraffico.DURATA_MAX);
+        sliderDurataVerdeSX.setMin(APP.controlloTraffico.ControlloTraffico.DURATA_MIN);
+        sliderDurataRossoAggiuntiva.setMax(APP.controlloTraffico.ControlloTraffico.DURATA_MAX);
+        sliderDurataRossoAggiuntiva.setMin(APP.controlloTraffico.ControlloTraffico.DURATA_MIN);
        
         // Aggiunta di un changeListener agli slider in grado di aggiornare le relative labels
         valoreDurataVerdeSX.textProperty().setValue(String.valueOf((int)sliderDurataVerdeSX.getValue()));

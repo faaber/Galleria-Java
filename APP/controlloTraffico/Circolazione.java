@@ -1,4 +1,4 @@
-package controlloTraffico;
+package APP.controlloTraffico;
 
 /**
  * Quest'enumerazione codifica i tipi di circolazione supportati dal sistema.

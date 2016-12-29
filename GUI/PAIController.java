@@ -5,8 +5,8 @@
  */
 package GUI;
 
-import controlloAccesso.Funzione;
-import controlloPAI.ControlloPAI;
+import APP.controlloAccesso.Funzione;
+import APP.controlloPAI.ControlloPAI;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;

@@ -1,12 +1,12 @@
-package controlloAccesso;
+package APP.controlloAccesso;
 
 import DDI.DDI;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloIlluminazione.Criterio;
-import controlloTraffico.ControlloTraffico;
-import controlloPAI.ControlloPAI;
-import controlloTraffico.Circolazione;
-import eccezioni.FunzioneNonDisponibileException;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloIlluminazione.Criterio;
+import APP.controlloTraffico.ControlloTraffico;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloTraffico.Circolazione;
+import APP.eccezioni.FunzioneNonDisponibileException;
 
 public class ControlloAccesso {
     

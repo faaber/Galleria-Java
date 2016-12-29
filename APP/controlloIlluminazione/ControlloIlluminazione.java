@@ -1,7 +1,7 @@
-package controlloIlluminazione;
+package APP.controlloIlluminazione;
 
-import controlloTraffico.IR;
-import arduino.LogicTask;
+import APP.controlloTraffico.IR;
+import APP.arduino.LogicTask;
 import java.util.Date;
 
 /**

@@ -6,8 +6,8 @@
 package GUI;
 
 import GUI.tools.MyRadioButtonsWrapper;
-import controlloAccesso.ControlloAccesso;
-import controlloAccesso.Permesso;
+import APP.controlloAccesso.ControlloAccesso;
+import APP.controlloAccesso.Permesso;
 import java.io.IOException;
 
 import java.net.URL;

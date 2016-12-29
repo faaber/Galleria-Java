@@ -1,11 +1,11 @@
 package GUI;
 
-import arduino.LogicTask;
-import controlloTraffico.IR;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloPAI.ControlloPAI;
-import controlloTraffico.Circolazione;
-import controlloTraffico.ControlloTraffico;
+import APP.arduino.LogicTask;
+import APP.controlloTraffico.IR;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloTraffico.Circolazione;
+import APP.controlloTraffico.ControlloTraffico;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
