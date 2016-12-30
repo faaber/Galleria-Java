@@ -92,7 +92,7 @@ public final class LogicTask extends Task<Integer> {
     }
 
     /**
-     * Invia dati alla porta seriale verso Arduino. Questi dati avranno il formato x,y.
+     * Invia dati alla porta seriale verso Arduino. Questi dati avranno il formato "&lt;x,y,&gt;".
      * @param valore1 valore x.
      * @param valore2 valore y.
      */

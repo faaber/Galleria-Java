@@ -8,6 +8,9 @@ import APP.controlloPAI.ControlloPAI;
 import APP.controlloTraffico.Circolazione;
 import APP.eccezioni.FunzioneNonDisponibileException;
 
+/**
+ * Classe che permette il login, il logout e la gestione dei permessi
+ */
 public class ControlloAccesso {
     
     private static ControlloAccesso instance = null;

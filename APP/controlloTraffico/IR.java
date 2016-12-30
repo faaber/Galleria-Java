@@ -34,7 +34,7 @@ public final class IR {
     /**
      * Questo metodo viene richiamato se viene ricevuto un segnale di transizione
      * del sensore IR1 da non occluso ad occluso o viceversa.
-     * @param occluso <code>true</code> se il nuovo stato del sensore e' 'occluso',
+     * @param occluso <code>true</code> se il nuovo stato del sensore e' "occluso",
      * <code>false</code> altrimenti
      */
     public void ricevutoInputIR1Occluso(boolean occluso) {

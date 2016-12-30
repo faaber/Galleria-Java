@@ -55,7 +55,7 @@ public final class ControlloTraffico {
      * Esegue operazioni ad intervalli di tempo la cui lunghezza in millisecondi
      * e' indicata nella variabile <code>latenzaOperazione</code>. Verifica il
      * valore della variabile <code>circolazione</code> nella classe Arduino.
- In base al suo valore, imposta il criterio di circolazione tra <code>Custom</code>,
+     * In base al suo valore, imposta il criterio di circolazione tra <code>Custom</code>,
      * <code>DoppioSenso</code>, <code>SensoUnicoAlter</code>, <code>SensoUnicoSx</code>,
      * <code>SensoUnicoDx</code>, <code>Interdetto</code>
      */

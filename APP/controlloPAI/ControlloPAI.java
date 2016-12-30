@@ -74,6 +74,9 @@ public final class ControlloPAI {
         return instance;
     }
     
+    /**
+     * Gestisce la ricezione dell'input di temperatura alta
+     */
     public void ricevutoInputTemperaturaAlta() {
         if (!temperaturaAltaCandidata) {
             temperaturaAltaCandidata = true;
@@ -81,6 +84,9 @@ public final class ControlloPAI {
         }
     }
     
+    /**
+     * Gestisce la ricezione dell'input di temperatura bassa
+     */
     public void ricevutoInputTemperaturaBassa() {
         if (temperaturaAltaCandidata) {
             temperaturaAltaCandidata = false;
@@ -88,6 +94,9 @@ public final class ControlloPAI {
         }
     }
     
+    /**
+     * Gestisce la logica che porta all'attivazione della PAI
+     */
     public void eseguiOperazioniPAI() {
         dataCheck = new Date();
 
@@ -105,7 +114,7 @@ public final class ControlloPAI {
      * Attiva la procedura antincendio. Imposta il criterio d'illuminazione
      * a costante, la circolazione a interdetto e registra l'attivazione
      * della PAI nel database
-     * @return Se è stato possibile attivare la PAI.
+     * @return <code>true</code> se è stato possibile attivare la PAI.
      */
     public boolean attivaPAI() {
         if (!PAIAttiva) {
@@ -126,7 +135,7 @@ public final class ControlloPAI {
      * Disattiva la procedura antincendio. Ripristina il funzionamento ordinario
      * della galleria, registrando la disattivazione della PAI nel database.
      * 
-     * @return Se è stato possibile disattivare la PAI.
+     * @return <code>true</code> se è stato possibile disattivare la PAI.
      */
     public boolean disattivaPAI() {
         if (PAIAttiva && !temperaturaAlta) {
