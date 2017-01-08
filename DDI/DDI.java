@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class DDI {
 
-    private static Properties ProprietàDB;
+    private static Properties ProprietaDB;
     private static List<Connection> RilasciaConnessioni;
 
     private static DDI instance = null;
@@ -72,10 +72,10 @@ public class DDI {
      * Carica delle credenziali di default per l'accesso al DB.
      */
     private static void CaricaCredenzialiDefault() {
-        ProprietàDB.setProperty("driver", "org.gjt.mm.mysql.Driver");
-        ProprietàDB.setProperty("url", "jdbc:mysql://localhost/galleria");
-        ProprietàDB.setProperty("username", "root");
-        ProprietàDB.setProperty("password", "1234");
+        ProprietaDB.setProperty("driver", "org.gjt.mm.mysql.Driver");
+        ProprietaDB.setProperty("url", "jdbc:mysql://localhost/galleria");
+        ProprietaDB.setProperty("username", "root");
+        ProprietaDB.setProperty("password", "1234");
     }
 
     /**
@@ -123,9 +123,9 @@ public class DDI {
     private static Connection ApriConnessione() throws SQLException {
         Connection nuovaconnessione = null;
 
-        nuovaconnessione = DriverManager.getConnection(ProprietàDB.getProperty("url"),
-                ProprietàDB.getProperty("username"),
-                ProprietàDB.getProperty("password"));
+        nuovaconnessione = DriverManager.getConnection(ProprietaDB.getProperty("url"),
+                ProprietaDB.getProperty("username"),
+                ProprietaDB.getProperty("password"));
 
         nuovaconnessione.setAutoCommit(false);
 
@@ -137,9 +137,9 @@ public class DDI {
      * @throws ClassNotFoundException Quando ci sono stati errori nel caricare il driver.
      */
     private static void CaricaDriver() throws ClassNotFoundException {
-        if(ProprietàDB.getProperty("driver")==null)
+        if(ProprietaDB.getProperty("driver")==null)
             throw new ClassNotFoundException();
-        Class.forName(ProprietàDB.getProperty("driver"));
+        Class.forName(ProprietaDB.getProperty("driver"));
     }
 
     /**
@@ -148,11 +148,11 @@ public class DDI {
      * @throws IOException In caso di problemi con il caricamento.
      */
     private static void CaricaCredenziali() throws IOException {
-        ProprietàDB = new Properties();
+        ProprietaDB = new Properties();
         try {
             InputStream fileProperties = DDI.class.getResourceAsStream("Credenziali_DB");
             if (fileProperties != null) {
-                ProprietàDB.load(fileProperties);
+                ProprietaDB.load(fileProperties);
             } else {
                 Logger.getLogger(DDI.class.getName()).log(Level.WARNING, "Attenzione: file delle credenziali non presente, verranno usate le credenziali di default");
                 CaricaCredenzialiDefault();

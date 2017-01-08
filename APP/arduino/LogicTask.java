@@ -20,7 +20,7 @@ public final class LogicTask extends Task<Integer> {
     
     private static LogicTask instance = null;
     
-    private static SerialPort serialPort = new SerialPort("COM3");
+    private static SerialPort serialPort = new SerialPort("COM4");
     
     private LogicTask() {
     }
