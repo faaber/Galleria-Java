@@ -286,8 +286,10 @@ public final class ControlloIlluminazione {
     }
 
     public void setCriterioDinamicoAttivo(boolean criterioDinamicoAttivo) {
-        if(criterioDinamicoAttivo)
+        if(criterioDinamicoAttivo) {
             impostaLEDSpenti();
+            LogicTask.getInstance().writeOnSerialPort(4, 0);
+        }
         this.criterioDinamicoAttivo = criterioDinamicoAttivo;
     }
     
