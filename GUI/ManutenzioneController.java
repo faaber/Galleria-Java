@@ -1,13 +1,12 @@
 package GUI;
 
-import arduino.LogicTask;
-import controlloTraffico.IR;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloPAI.ControlloPAI;
-import controlloTraffico.Circolazione;
-import controlloTraffico.ControlloTraffico;
+import APP.arduino.LogicTask;
+import APP.controlloTraffico.IR;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloTraffico.Circolazione;
+import APP.controlloTraffico.ControlloTraffico;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,15 +17,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.Main;
 
 /**
- * FXML Controller class
+ * Settore della GUI che si occupa della vista di manutenzione.
  */
 public class ManutenzioneController implements Initializable {
 
+    @FXML
+    private Pane manutenzionePane;              // Trattato come Pane
     @FXML
     private Button cnSmf1;
     @FXML
@@ -317,5 +319,13 @@ public class ManutenzioneController implements Initializable {
             
             cnBarraProgressoStriscia.setProgress(posizioneVetturaBarraProgresso);
         }
+    }
+    
+    /**
+     * Abilita o disabilita gli input dell'utente su tale settore dell'interfaccia.
+     * @param val <code>True/False</code> se va disabilitato/abilitato.
+     */
+    public void disabilitaVista(boolean val){
+        manutenzionePane.setDisable(val);
     }
 }

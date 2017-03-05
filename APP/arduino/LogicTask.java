@@ -1,9 +1,9 @@
-package arduino;
+package APP.arduino;
 
-import controlloTraffico.ControlloTraffico;
-import controlloTraffico.IR;
-import controlloPAI.ControlloPAI;
-import controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloTraffico.ControlloTraffico;
+import APP.controlloTraffico.IR;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloIlluminazione.ControlloIlluminazione;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
@@ -12,7 +12,7 @@ import jssc.SerialPortException;
 
 /**
  * Classe Control che segue le operazioni di comunicazione tra Arduino e Java. Estende
- * <code>Task<Integer></code>. Utilizziamo il design pattern Singleton
+ * <code>Task</code>. Utilizziamo il design pattern Singleton.
  */
 public final class LogicTask extends Task<Integer> {
     private boolean arduinoCollegato = false;
@@ -20,13 +20,14 @@ public final class LogicTask extends Task<Integer> {
     
     private static LogicTask instance = null;
     
-    private static SerialPort serialPort = new SerialPort("COM3");
+    private static SerialPort serialPort = new SerialPort("COM4");
     
     private LogicTask() {
     }
     
     /**
      * Metodo che implementa il design pattern Singleton
+     * @return L'istanza della classe
      */
     public static LogicTask getInstance() {
         if (instance == null) {
@@ -91,9 +92,9 @@ public final class LogicTask extends Task<Integer> {
     }
 
     /**
-     * Invia dati alla porta seriale verso Arduino. Questi dati avranno il formato <x,y,>
-     * @param valore1 valore x
-     * @param valore2 valore y
+     * Invia dati alla porta seriale verso Arduino. Questi dati avranno il formato "&lt;x,y,&gt;".
+     * @param valore1 valore x.
+     * @param valore2 valore y.
      */
     public void writeOnSerialPort(int valore1, int valore2) {
         String serialString;

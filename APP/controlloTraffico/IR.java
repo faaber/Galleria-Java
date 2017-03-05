@@ -1,6 +1,6 @@
-package controlloTraffico;
+package APP.controlloTraffico;
 
-import controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloIlluminazione.ControlloIlluminazione;
 import java.util.Date;
 
 /**
@@ -22,6 +22,7 @@ public final class IR {
     
     /**
      * Metodo che implementa il design pattern Singleton
+     * @return L'istanza della classe.
      */
     public static IR getInstance() {
         if (instance == null) {
@@ -33,7 +34,7 @@ public final class IR {
     /**
      * Questo metodo viene richiamato se viene ricevuto un segnale di transizione
      * del sensore IR1 da non occluso ad occluso o viceversa.
-     * @param occluso <code>true</code> se il nuovo stato del sensore e' 'occluso',
+     * @param occluso <code>true</code> se il nuovo stato del sensore e' "occluso",
      * <code>false</code> altrimenti
      */
     public void ricevutoInputIR1Occluso(boolean occluso) {

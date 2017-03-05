@@ -1,7 +1,7 @@
-package controlloIlluminazione;
+package APP.controlloIlluminazione;
 
-import controlloTraffico.IR;
-import arduino.LogicTask;
+import APP.controlloTraffico.IR;
+import APP.arduino.LogicTask;
 import java.util.Date;
 
 /**
@@ -52,6 +52,7 @@ public final class ControlloIlluminazione {
     
     /**
      * Metodo che implementa il desing pattern Singleton
+     * @return L'instanza della classe.
      */
     public static ControlloIlluminazione getInstance() {
         if (instance == null) {
@@ -285,6 +286,10 @@ public final class ControlloIlluminazione {
     }
 
     public void setCriterioDinamicoAttivo(boolean criterioDinamicoAttivo) {
+        if(criterioDinamicoAttivo) {
+            impostaLEDSpenti();
+            LogicTask.getInstance().writeOnSerialPort(4, 0);
+        }
         this.criterioDinamicoAttivo = criterioDinamicoAttivo;
     }
     

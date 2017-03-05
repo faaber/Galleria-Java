@@ -1,12 +1,16 @@
-package controlloAccesso;
+package APP.controlloAccesso;
 
 import DDI.DDI;
-import controlloIlluminazione.ControlloIlluminazione;
-import controlloIlluminazione.Criterio;
-import controlloTraffico.ControlloTraffico;
-import controlloPAI.ControlloPAI;
-import controlloTraffico.Circolazione;
+import APP.controlloIlluminazione.ControlloIlluminazione;
+import APP.controlloIlluminazione.Criterio;
+import APP.controlloTraffico.ControlloTraffico;
+import APP.controlloPAI.ControlloPAI;
+import APP.controlloTraffico.Circolazione;
+import APP.eccezioni.FunzioneNonDisponibileException;
 
+/**
+ * Classe che permette il login, il logout e la gestione dei permessi
+ */
 public class ControlloAccesso {
     
     private static ControlloAccesso instance = null;
@@ -37,18 +41,14 @@ public class ControlloAccesso {
      * Effettua un tentativo di login
      * @param username Utente da loggare
      * @param password Password inserita
-     * @return <code>true</code> se l'autenticazione ha avuto successo,
-     *         <code>false</code> altrimenti
+     * @return L'istanza di un <code>Permesso</code> se l'autenticazione ha avuto successo,
+     *         <code>null</code> altrimenti
      */
     public Permesso effettuaLogin(String username, String password) {
-        /* Richiama il metodo 'readUtente' nella classe DDI nel package DDI.
-         * Se il login ha successo memorizza l'utente loggato nella variabile
-         * "utenteLoggato"
-         */
-        
-        // Richiamare il metodo "readUtente" del sottosistema DDI
         
         permesso=DDI.getInstance().readUtente(username, password);
+        if(permesso!=null)
+            utenteLoggato=username;
         return permesso;
 //        // Inizio stub
 //        utenteLoggato = username;
@@ -73,11 +73,34 @@ public class ControlloAccesso {
     public String getUtenteLoggato(){
         return utenteLoggato;
     }
-       
-    public void richiediFunzione(Funzione pFunzione, Object parametro){
+    
+    /**
+     * Consente di richiedere le funzioni al sistema da parte di uno specifico utente.
+     * Le informazioni sull'utente vengono reperite automaticamente.
+     * @param pFunzione La funzione richiesta dall'utente.
+     * @param parametro I parametri della funzione.
+     * @throws FunzioneNonDisponibileException Quando la richiesta viene negata a causa di un motivo generico,
+     * per mancanza di un permesso sufficiente o per lo stato della PAI.
+     */
+    public void richiediFunzione(Funzione pFunzione, Object parametro) throws FunzioneNonDisponibileException{
+        boolean permessoInsufficiente=false, paiInCorso=false;
         if(permesso==null || !permesso.supporta(pFunzione))
-            return;
-        
+            permessoInsufficiente=true;
+        if(ControlloPAI.getInstance().isPAIAttiva()==true){
+            if(permesso==Permesso.OPERATORE){
+                if(pFunzione==Funzione.DISATTIVA_PAI){
+                    ControlloPAI.getInstance().disattivaPAI();
+                    return;
+                }
+                else
+                    paiInCorso=true;
+            }
+            else
+                paiInCorso=true;        
+        }
+        if(permessoInsufficiente || paiInCorso)
+            throw new FunzioneNonDisponibileException(permessoInsufficiente, paiInCorso);
+                
         switch(pFunzione){
             case SET_LIVELLO_CM:
                 ControlloIlluminazione.getInstance().setIntensitaCriterioCostante((int) parametro);

@@ -1,12 +1,9 @@
-package controlloAccesso;
+package APP.controlloAccesso;
 
 /**
  * Quest'enumerazione codifica il livello di permesso degli utenti registrati.
- * <code>controllore</code> puo' solo visualizzare informazioni, non può effettuare
- * modifiche
- * <code>operatore</code> puo' visualizzare e modificare
- * <
- * @author Alessandro
+ * <code>Permesso.CONTROLLORE</code> può solo visualizzare informazioni ma non può effettuare modifiche.
+ * <code>Permesso.OPERATORE</code> può sia visualizzare che modificare le informazioni.
  */
 public enum Permesso {
     CONTROLLORE(),
@@ -19,6 +16,11 @@ public enum Permesso {
         Funzione.SET_LIVELLO_CM,
         Funzione.SET_CRITERIO);
     
+    /**
+     * Verifica se una data Funzione è supportata dal Permesso in questione.
+     * @param funzione
+     * @return <code>True/false</code> in base al fatto che la funzione sia supportata o meno.
+     */
     public boolean supporta(Funzione funzione){
         for (Funzione funzioni1 : funzioni) {
             if (funzione == funzioni1) {
@@ -26,6 +28,14 @@ public enum Permesso {
             }
         }
         return false;
+    }
+    
+    /**
+     * Ottieni tutte le Funzioni supportate dal Permesso.
+     * @return Il vettore delle funzioni supportate
+     */
+    public Funzione[] getFunzioni(){
+        return funzioni.clone();
     }
     
     private final Funzione[] funzioni;
